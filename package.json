@@ -4,12 +4,22 @@
   "private": true,
   "scripts": {
     "build": "ng build",
+    "cypress:headless": "cypress run --config-file cypress/cypress.config.ts --headless -b chrome",
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
+    "lint": "ng lint",
+    "lint:fix": "npm run lint -- --fix",
     "ng": "ng",
     "prepare": "husky",
+    "prettier": "prettier --config .prettierrc --write \"**/*.{css,html,js,jsx,json,md,scss,ts,tsx}\"",
+    "prettier:test": "prettier --config .prettierrc --list-different \"**/*.{css,html,js,jsx,json,md,scss,ts,tsx}\"",
     "start": "ng serve",
-    "test": "ng test",
+    "test": "npm run lint && npm run test:ci && npm run test:cypress",
+    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:cypress": "start-server-and-test start http://localhost:4200 cypress:headless",
+    "test:cypress:open": "start-server-and-test start http://localhost:4200 cypress:open",
     "watch": "ng build --watch --configuration development"
   },
+  "type": "module",
   "dependencies": {
     "@angular/animations": "^18.1.0",
     "@angular/common": "^18.1.0",
@@ -28,6 +38,12 @@
     "@angular/cli": "^18.1.1",
     "@angular/compiler-cli": "^18.1.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^20.11.24",
+    "angular-eslint": "18.1.0",
+    "cypress": "^13.13.1",
+    "eslint": "^9.6.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^3.3.0",
     "husky": "^9.1.1",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -38,6 +54,12 @@
     "lint-staged": "^15.2.7",
     "ng-lint-staged": "^12.0.4",
     "prettier": "^3.3.3",
-    "typescript": "~5.5.2"
+    "start-server-and-test": "^2.0.3",
+    "typescript": "~5.5.2",
+    "typescript-eslint": "^8.0.0-alpha.38"
+  },
+  "engines": {
+    "node": "^20.11.1",
+    "npm": "^10.2.4"
   }
 }
