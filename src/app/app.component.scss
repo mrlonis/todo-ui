@@ -1,4 +1,7 @@
 .router-container {
-  display: flex;
+  display: flex !important;
   justify-content: center;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-around;
 }

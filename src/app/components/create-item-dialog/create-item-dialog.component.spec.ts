@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateItemDialogComponent } from './create-item-dialog.component';
 
 describe('CreateItemDialogComponent', () => {
@@ -8,7 +12,13 @@ describe('CreateItemDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateItemDialogComponent],
+      imports: [CreateItemDialogComponent, NoopAnimationsModule],
+      providers: [
+        { provide: DialogRef, useValue: {} },
+        { provide: DIALOG_DATA, useValue: {} },
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateItemDialogComponent);

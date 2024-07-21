@@ -6,11 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
 import { CreateItemDialogComponent } from '../create-item-dialog/create-item-dialog.component';
+import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CdkAccordionModule, DialogModule, FormsModule, MatButtonModule],
+  imports: [CdkAccordionModule, DialogModule, FormsModule, MatButtonModule, TodoItemComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit {
     });
 
     dialogRef.closed.subscribe((result) => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed', result);
       if (result) {
         this.apiService.getTodoItems().subscribe((items) => {
           this.items = items;
