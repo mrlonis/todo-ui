@@ -12,4 +12,8 @@ export class ApiService {
   getTodoItems(): Observable<TodoItem[]> {
     return this.httpClient.get<TodoItem[]>('http://localhost:8080/api/todo/items');
   }
+
+  createTodoItem(todoItem: TodoItem): Observable<TodoItem> {
+    return this.httpClient.post<TodoItem>('http://localhost:8080/api/todo/item', todoItem);
+  }
 }

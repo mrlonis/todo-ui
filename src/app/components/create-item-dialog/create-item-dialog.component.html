@@ -1,0 +1,10 @@
+<h1>Hi {{ data.name }}</h1>
+<div>
+  <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+  <label id="favorite-animal">What's your favorite animal?</label>
+  <input for="favorite-animal" [(ngModel)]="data.animal" placeholder="Enter your name" />
+</div>
+<div>
+  <button (click)="dialogRef.close(data.animal)">OK</button>
+  <button (click)="dialogRef.close()">Cancel</button>
+</div>

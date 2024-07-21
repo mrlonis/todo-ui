@@ -11,8 +11,8 @@
       [attr.aria-expanded]="accordionItem.expanded"
       [attr.aria-controls]="'accordion-body-' + index"
     >
-      <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -->
-      <div class="example-accordion-item-header" (click)="accordionItem.toggle()" (keypress)="accordionItem.toggle()">
+      <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus, @angular-eslint/template/click-events-have-key-events -->
+      <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
         {{ item }}
         <span class="example-accordion-item-description">
           Click to {{ accordionItem.expanded ? 'close' : 'open' }}
@@ -31,3 +31,18 @@
     </cdk-accordion-item>
   }
 </cdk-accordion>
+<ol>
+  <li>
+    <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+    <label id="dialog-user-name">What's your name?</label>
+    <input for="dialog-user-name" [(ngModel)]="name" />
+  </li>
+  <li>
+    <button (click)="openDialog()">Pick one</button>
+  </li>
+  @if (animal) {
+    <li>
+      You chose: <em>{{ animal }}</em>
+    </li>
+  }
+</ol>
