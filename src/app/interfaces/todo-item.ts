@@ -1,9 +1,11 @@
 export interface TodoItem {
-  id: number;
+  id?: number;
+  title: string;
+  jiraUrl?: string;
   prUrls: string[];
-  cloudForgeConsoleUrl: string;
-  releaseRequestUrl: string;
+  cloudForgeConsoleUrl?: string;
+  releaseRequestUrl?: string;
   urlsUsedForTesting: string[];
   completed: boolean;
-  oneNoteUrl: string;
+  oneNoteUrl?: string;
 }
