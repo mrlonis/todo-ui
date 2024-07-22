@@ -8,4 +8,8 @@ export interface TodoItem {
   urlsUsedForTesting: string[];
   completed: boolean;
   oneNoteUrl?: string;
+  createdOn: string;
+  pi: string;
+  sprint: number;
+  type: string;
 }

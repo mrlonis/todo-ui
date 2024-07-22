@@ -1,6 +1,5 @@
-import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -12,14 +11,11 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CdkAccordionModule, DialogModule, FormsModule, MatButtonModule, MatExpansionModule, TodoItemComponent],
+  imports: [DialogModule, FormsModule, MatButtonModule, MatExpansionModule, TodoItemComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  readonly panelOpenState = signal(false);
-
   items: TodoItem[] = [];
   expandedIndex = 0;
   animal?: string;
