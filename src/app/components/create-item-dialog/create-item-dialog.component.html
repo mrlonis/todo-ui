@@ -12,6 +12,30 @@
         <mat-label>JIRA URL</mat-label>
         <input matInput formControlName="jiraUrlFormControl" placeholder="Ex: https://jira.com/CIAE-#####" />
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>PI</mat-label>
+        <mat-select formControlName="piFormControl">
+          @for (pi of pis; track pi) {
+            <mat-option [value]="pi">{{ pi }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Sprint</mat-label>
+        <mat-select formControlName="sprintFormControl">
+          @for (sprint of sprints; track sprint) {
+            <mat-option [value]="sprint">{{ sprint }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="typeFormControl">
+          @for (todoItemType of todoItemTypes; track todoItemType) {
+            <mat-option [value]="todoItemType">{{ todoItemType }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
       <mat-divider></mat-divider>
       <div formGroupName="prUrls">
         <button mat-flat-button type="button" (click)="addNewPrUrl()">Add New PR URL</button>

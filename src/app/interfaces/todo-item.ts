@@ -1,3 +1,7 @@
+export type TodoItemType = 'ASSIGNED' | 'INNOVATION' | 'TECH_DEBT' | 'BUG' | 'OTHER';
+
+export const TODO_ITEM_TYPES: TodoItemType[] = ['ASSIGNED', 'INNOVATION', 'TECH_DEBT', 'BUG', 'OTHER'];
+
 export interface TodoItem {
   id?: number;
   title: string;
@@ -11,5 +15,5 @@ export interface TodoItem {
   createdOn: string;
   pi: string;
   sprint: number;
-  type: string;
+  type: TodoItemType;
 }

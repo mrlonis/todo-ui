@@ -8,8 +8,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { TodoItem } from '../../interfaces';
+import { MatSelectModule } from '@angular/material/select';
+import { TODO_ITEM_TYPES, TodoItem, TodoItemType } from '../../interfaces';
 import { ApiService } from '../../services';
+
+export interface CreateItemDialogData {
+  pis: string[];
+  sprints: number[];
+}
 
 export interface PrUrlFormGroupArray {
   name: string;
@@ -33,14 +39,19 @@ export interface TestingUrlFormGroupArray {
     MatFormFieldModule,
     MatInputModule,
     MatListModule,
+    MatSelectModule,
     ReactiveFormsModule,
   ],
   templateUrl: './create-item-dialog.component.html',
   styleUrl: './create-item-dialog.component.scss',
 })
 export class CreateItemDialogComponent {
+  pis: string[];
+  sprints: number[];
+
   nextPrUrlIdNum = 1;
   nextTestingUrlIdNum = 1;
+  todoItemTypes = TODO_ITEM_TYPES;
 
   prUrlsFormGroup = new FormGroup<Record<string, AbstractControl<string | null>>>({});
   prUrlsFormGroupAsArray: PrUrlFormGroupArray[] = [];
@@ -50,6 +61,11 @@ export class CreateItemDialogComponent {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     titleFormControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     jiraUrlFormControl: new FormControl<string | null>(null),
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    piFormControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    sprintFormControl: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    typeFormControl: new FormControl<TodoItemType>('ASSIGNED', { nonNullable: true }),
     prUrls: this.prUrlsFormGroup,
     cloudForgeConsoleUrl: new FormControl<string | null>(null),
     releaseRequestUrl: new FormControl<string | null>(null),
@@ -60,24 +76,32 @@ export class CreateItemDialogComponent {
 
   constructor(
     public dialogRef: DialogRef<TodoItem>,
-    @Inject(DIALOG_DATA) public data: TodoItem,
+    @Inject(DIALOG_DATA) public data: CreateItemDialogData,
     private apiService: ApiService,
-  ) {}
+  ) {
+    console.log('data', data);
+    this.pis = data.pis;
+    this.sprints = data.sprints;
+  }
 
   getTodoItem(): TodoItem {
-    this.data.title = this.createItemDialogForm.controls.titleFormControl.value;
-    this.data.jiraUrl = this.createItemDialogForm.controls.jiraUrlFormControl.value ?? undefined;
-    this.data.prUrls = this.getPrUrlFormControlsAsArray()
-      .filter((prUrl) => prUrl.control.value !== null)
-      .map((prUrl) => prUrl.control.value) as string[];
-    this.data.cloudForgeConsoleUrl = this.createItemDialogForm.controls.cloudForgeConsoleUrl.value ?? undefined;
-    this.data.releaseRequestUrl = this.createItemDialogForm.controls.releaseRequestUrl.value ?? undefined;
-    this.data.urlsUsedForTesting = this.getUrlsUsedForTestingFormControlsAsArray()
-      .filter((testingUrl) => testingUrl.control.value !== null)
-      .map((testingUrl) => testingUrl.control.value) as string[];
-    this.data.completed = this.createItemDialogForm.controls.completed.value ?? false;
-    this.data.oneNoteUrl = this.createItemDialogForm.controls.oneNoteUrl.value ?? undefined;
-    return this.data;
+    return {
+      title: this.createItemDialogForm.controls.titleFormControl.value,
+      jiraUrl: this.createItemDialogForm.controls.jiraUrlFormControl.value ?? undefined,
+      prUrls: this.getPrUrlFormControlsAsArray()
+        .filter((prUrl) => prUrl.control.value !== null)
+        .map((prUrl) => prUrl.control.value) as string[],
+      cloudForgeConsoleUrl: this.createItemDialogForm.controls.cloudForgeConsoleUrl.value ?? undefined,
+      releaseRequestUrl: this.createItemDialogForm.controls.releaseRequestUrl.value ?? undefined,
+      urlsUsedForTesting: this.getUrlsUsedForTestingFormControlsAsArray()
+        .filter((testingUrl) => testingUrl.control.value !== null)
+        .map((testingUrl) => testingUrl.control.value) as string[],
+      completed: this.createItemDialogForm.controls.completed.value ?? false,
+      oneNoteUrl: this.createItemDialogForm.controls.oneNoteUrl.value ?? undefined,
+      pi: this.createItemDialogForm.controls.piFormControl.value,
+      sprint: this.createItemDialogForm.controls.sprintFormControl.value,
+      type: this.createItemDialogForm.controls.typeFormControl.value,
+    } as TodoItem;
   }
 
   onSubmit() {
@@ -86,8 +110,7 @@ export class CreateItemDialogComponent {
     console.log('todoItem', todoItem);
     this.apiService.createTodoItem(todoItem).subscribe((result) => {
       console.log('result', result);
-      this.data = result;
-      this.dialogRef.close(todoItem);
+      this.dialogRef.close(result);
     });
   }
 
