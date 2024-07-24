@@ -1,8 +1,11 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
@@ -11,38 +14,35 @@ import { AddNewSprintDialogComponent, AddNewSprintDialogData } from '../add-new-
 import { CreateItemDialogComponent, CreateItemDialogData } from '../create-item-dialog/create-item-dialog.component';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
-
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [DialogModule, FormsModule, MatButtonModule, MatExpansionModule, MatTableModule, TodoItemComponent],
+  imports: [
+    DialogModule,
+    FormsModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatIconModule,
+    TodoItemComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  columnsToDisplay = ['title', 'jiraUrl'];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  expandedElement: TodoItem | null = null;
 
-  items: TodoItem[] = [];
+  items?: Map<string, Map<number, TodoItem[]>>;
   expandedIndex = 0;
   animal?: string;
   name?: string;
@@ -59,16 +59,22 @@ export class HomeComponent implements OnInit {
   }
 
   getTodoItems() {
-    this.apiService.getTodoItems().subscribe((items) => {
-      this.items = items;
-
+    this.apiService.getTodoItemsByPiAndBySprint().subscribe((items) => {
       const piSet = new Set<string>();
       const sprintSet = new Set<number>();
+      const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
 
-      items.forEach((item) => {
-        piSet.add(item.pi);
-        sprintSet.add(item.sprint);
-      });
+      for (const pi in items) {
+        piSet.add(pi);
+        const sprintMap = new Map<number, TodoItem[]>();
+        for (const sprint in items[pi]) {
+          const sprintIntValue = parseInt(sprint, 10);
+          sprintSet.add(sprintIntValue);
+          sprintMap.set(sprintIntValue, items[pi][sprint]);
+        }
+        newItemsMap.set(pi, sprintMap);
+      }
+      this.items = newItemsMap;
 
       this.pis = Array.from(piSet);
       this.sprints = Array.from(sprintSet);

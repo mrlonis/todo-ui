@@ -3,6 +3,7 @@ export type TodoItemType = 'ASSIGNED' | 'INNOVATION' | 'TECH_DEBT' | 'BUG' | 'OT
 export const TODO_ITEM_TYPES: TodoItemType[] = ['ASSIGNED', 'INNOVATION', 'TECH_DEBT', 'BUG', 'OTHER'];
 
 export interface TodoItem {
+  [key: string]: number | string | string[] | boolean | undefined;
   id?: number;
   title: string;
   jiraUrl?: string;
