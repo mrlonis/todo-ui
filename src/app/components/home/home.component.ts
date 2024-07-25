@@ -39,7 +39,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
 })
 export class HomeComponent implements OnInit {
   columnsToDisplay = ['title', 'jiraUrl'];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
   expandedElement: TodoItem | null = null;
 
   items?: Map<string, Map<number, TodoItem[]>>;

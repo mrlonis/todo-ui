@@ -12,26 +12,36 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
   @if (items !== undefined) {
-    <mat-accordion [multi]="true">
+    <mat-accordion [multi]="true" displayMode="default">
       @if (items.size === 0) {
         <div class="example-accordion-empty">No items found</div>
       }
       @if (items.size > 0) {
         @for (item of items; track item[0]; let index = $index) {
-          <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel [expanded]="true" class="white-border">
             <mat-expansion-panel-header>
               <mat-panel-title>PR {{ item[0] }}</mat-panel-title>
               <mat-panel-description>PR Description {{ item[0] }}</mat-panel-description>
             </mat-expansion-panel-header>
 
             @for (sprintItem of item[1]; track sprintItem[0]; let index = $index) {
-              <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel [expanded]="true" class="white-border">
                 <mat-expansion-panel-header>
                   <mat-panel-title>Sprint {{ sprintItem[0] }}</mat-panel-title>
                   <mat-panel-description>Sprint Description {{ sprintItem[0] }}</mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <table mat-table [dataSource]="sprintItem[1]" multiTemplateDataRows class="mat-elevation-z8">
+                <table
+                  mat-table
+                  [dataSource]="sprintItem[1]"
+                  multiTemplateDataRows
+                  class="mat-elevation-z8 white-border"
+                >
+                  <ng-container matColumnDef="completed">
+                    <th mat-header-cell *matHeaderCellDef>Completed</th>
+                    <td mat-cell *matCellDef="let element">{{ element['completed'] }}</td>
+                  </ng-container>
+
                   @for (column of columnsToDisplay; track column) {
                     <ng-container matColumnDef="{{ column }}">
                       <th mat-header-cell *matHeaderCellDef>{{ column }}</th>

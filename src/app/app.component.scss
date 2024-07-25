@@ -1,7 +1,11 @@
+.height-100vh {
+  height: 100vh;
+}
+
 .router-container {
   display: flex !important;
   justify-content: center;
   flex-grow: 1;
   flex-direction: column;
-  justify-content: space-around;
+  height: 100%;
 }
