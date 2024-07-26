@@ -3,6 +3,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -21,6 +22,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
     DialogModule,
     FormsModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatExpansionModule,
     MatTableModule,
     MatProgressBarModule,
@@ -40,7 +42,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
 export class HomeComponent implements OnInit {
   columnsToDisplay = ['title', 'jiraUrl'];
   columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
-  expandedElement: TodoItem | null = null;
+  expandedElementId?: number;
 
   items?: Map<string, Map<number, TodoItem[]>>;
   expandedIndex = 0;
@@ -127,5 +129,36 @@ export class HomeComponent implements OnInit {
         console.log('No add new sprint result');
       }
     });
+  }
+
+  onCheckboxChange(event: MatCheckboxChange, item: TodoItem) {
+    console.log('Checkbox changed', event, item);
+    item.completed = !item.completed;
+    this.apiService.updateTodoItem(item).subscribe((updatedItem) => {
+      console.log('Updated item', updatedItem);
+      this.getTodoItems();
+    });
+  }
+
+  handleRowExpansion(event: Event, element: TodoItem, stopPropagation = false) {
+    console.log('Row expansion', event, element, stopPropagation);
+
+    // Check if event target id contains completed-checkbox, If it does, ignore the event (but still stop propagation if desired)
+    if ((event.target as HTMLElement).id.includes('completed-checkbox')) {
+      console.log('Ignoring row expansion event because it was triggered by the checkbox');
+      if (stopPropagation) {
+        console.log('Stopping propagation');
+        event.stopPropagation();
+      }
+      return;
+    }
+
+    console.log('Expanding element', element);
+    this.expandedElementId = this.expandedElementId === element.id ? undefined : element.id;
+    console.log('Expanded element', this.expandedElementId);
+    if (stopPropagation) {
+      console.log('Stopping propagation');
+      event.stopPropagation();
+    }
   }
 }

@@ -39,7 +39,19 @@
                 >
                   <ng-container matColumnDef="completed">
                     <th mat-header-cell *matHeaderCellDef>Completed</th>
-                    <td mat-cell *matCellDef="let element">{{ element['completed'] }}</td>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element['completed'] }}
+                      <section class="example-section">
+                        <p>
+                          <mat-checkbox
+                            id="completed-checkbox-{{ element['id'] }}"
+                            (change)="onCheckboxChange($event, element)"
+                            [checked]="element['completed']"
+                            >Pepperoni</mat-checkbox
+                          >
+                        </p>
+                      </section>
+                    </td>
                   </ng-container>
 
                   @for (column of columnsToDisplay; track column) {
@@ -54,11 +66,9 @@
                       <button
                         mat-icon-button
                         aria-label="expand row"
-                        (click)="
-                          expandedElement = expandedElement === element ? null : element; $event.stopPropagation()
-                        "
+                        (click)="handleRowExpansion($event, element, true)"
                       >
-                        @if (expandedElement === element) {
+                        @if (expandedElementId === element['id']) {
                           <mat-icon>keyboard_arrow_up</mat-icon>
                         } @else {
                           <mat-icon>keyboard_arrow_down</mat-icon>
@@ -72,7 +82,7 @@
                     <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
                       <div
                         class="example-element-detail"
-                        [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
+                        [@detailExpand]="element['id'] === expandedElementId ? 'expanded' : 'collapsed'"
                       >
                         <app-todo-item [item]="element"></app-todo-item>
                       </div>
@@ -84,8 +94,8 @@
                     mat-row
                     *matRowDef="let element; columns: columnsToDisplayWithExpand"
                     class="example-element-row"
-                    [class.example-expanded-row]="expandedElement === element"
-                    (click)="expandedElement = expandedElement === element ? null : element"
+                    [class.example-expanded-row]="expandedElementId === element['id']"
+                    (click)="handleRowExpansion($event, element)"
                   ></tr>
                   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
                 </table>
