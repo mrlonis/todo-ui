@@ -26,4 +26,8 @@ export class ApiService {
       'http://localhost:8080/api/todo/itemsByPiAndBySprint',
     );
   }
+
+  updateTodoItem(todoItem: TodoItem): Observable<TodoItem> {
+    return this.httpClient.post<TodoItem>('http://localhost:8080/api/todo/item', todoItem);
+  }
 }
