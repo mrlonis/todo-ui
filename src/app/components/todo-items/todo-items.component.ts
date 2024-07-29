@@ -17,7 +17,7 @@ import { CreateItemDialogComponent, CreateItemDialogData } from '../create-item-
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-todo-items',
   standalone: true,
   imports: [
     DialogModule,
@@ -42,7 +42,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
     ]),
   ],
 })
-export class HomeComponent implements OnInit {
+export class TodoItemsComponent implements OnInit {
   columnsToDisplay = ['title', 'jiraUrl'];
   columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
   expandedElementId?: number;
