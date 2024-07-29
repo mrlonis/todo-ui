@@ -1,8 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CreateItemDialogComponent } from '../create-item-dialog/create-item-dialog.component';
-import { HomeComponent } from './home.component';
+import { CreateItemDialogComponent } from '../create-item-dialog';
+import { HomeComponent } from './todo-items.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

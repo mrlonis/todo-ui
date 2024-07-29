@@ -32,8 +32,8 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
     TodoItemComponent,
     ReactiveFormsModule,
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  templateUrl: './todo-items.component.html',
+  styleUrl: './todo-items.component.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed,void', style({ height: '0px', minHeight: '0' })),
