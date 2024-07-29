@@ -1,0 +1,17 @@
+<div class="home-container">
+  <div class="create-new-task-button-container">
+    <button mat-flat-button (click)="openNewPiDialog()">Add New PI</button>
+    <button mat-flat-button (click)="openNewSprintDialog()">Add New Sprint</button>
+    <button mat-flat-button (click)="openDialog()">Create New Task</button>
+  </div>
+  <div>
+    <p>PIs: {{ pis }}</p>
+    <p>Sprints: {{ sprints }}</p>
+  </div>
+  <app-base-todo-items
+    title="TODO Items"
+    [refreshTodoItems]="refreshTodoItems.asObservable()"
+    (pis)="setPis($event)"
+    (sprints)="setSprints($event)"
+  ></app-base-todo-items>
+</div>

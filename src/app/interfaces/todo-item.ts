@@ -14,7 +14,9 @@ export interface TodoItem {
   completed: boolean;
   oneNoteUrl?: string;
   createdOn: string;
+  completedOn?: string;
   pi: string;
   sprint: number;
   type: TodoItemType;
+  archived: boolean;
 }

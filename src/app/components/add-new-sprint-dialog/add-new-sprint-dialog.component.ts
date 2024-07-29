@@ -1,14 +1,31 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, Inject, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 export interface AddNewSprintDialogData {
   sprints: number[];
+}
+
+export function duplicateSprintValidator(sprints: number[]): ValidatorFn {
+  return (control: AbstractControl<number>): ValidationErrors | null => {
+    const duplicateSprints = sprints.includes(control.value);
+    return duplicateSprints ? { duplicateSprint: { value: control.value } } : null;
+  };
 }
 
 @Component({
@@ -18,6 +35,7 @@ export interface AddNewSprintDialogData {
     FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -29,17 +47,17 @@ export interface AddNewSprintDialogData {
 export class AddNewSprintDialogComponent {
   @Input() sprints: number[] = [];
 
-  formGroup = new FormGroup({
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    formControl: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
-  });
+  formGroup: FormGroup<{
+    formControl: FormControl<number>;
+  }>;
 
-  constructor(
-    public dialogRef: DialogRef<number>,
-    @Inject(DIALOG_DATA) public data: number,
-  ) {}
-
-  onSubmit() {
-    this.dialogRef.close(this.formGroup.controls.formControl.value);
+  constructor(@Inject(DIALOG_DATA) public data: AddNewSprintDialogData) {
+    this.formGroup = new FormGroup({
+      formControl: new FormControl<number>(0, {
+        nonNullable: true,
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        validators: [Validators.required, duplicateSprintValidator(this.data.sprints)],
+      }),
+    });
   }
 }

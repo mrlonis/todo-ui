@@ -1,14 +1,31 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, Inject, Input } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 export interface AddNewPiDialogData {
   pis: string[];
+}
+
+export function duplicatePiValidator(pis: string[]): ValidatorFn {
+  return (control: AbstractControl<string>): ValidationErrors | null => {
+    const duplicatePi = pis.includes(control.value);
+    return duplicatePi ? { duplicatePi: { value: control.value } } : null;
+  };
 }
 
 @Component({
@@ -18,6 +35,7 @@ export interface AddNewPiDialogData {
     FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -29,17 +47,17 @@ export interface AddNewPiDialogData {
 export class AddNewPiDialogComponent {
   @Input() pis: string[] = [];
 
-  formGroup = new FormGroup({
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    formControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-  });
+  formGroup: FormGroup<{
+    formControl: FormControl<string>;
+  }>;
 
-  constructor(
-    public dialogRef: DialogRef<string>,
-    @Inject(DIALOG_DATA) public data: string,
-  ) {}
-
-  onSubmit() {
-    this.dialogRef.close(this.formGroup.controls.formControl.value);
+  constructor(@Inject(DIALOG_DATA) public data: AddNewPiDialogData) {
+    this.formGroup = new FormGroup({
+      formControl: new FormControl<string>('', {
+        nonNullable: true,
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        validators: [Validators.required, duplicatePiValidator(this.data.pis)],
+      }),
+    });
   }
 }

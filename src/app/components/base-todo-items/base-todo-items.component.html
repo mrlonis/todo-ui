@@ -1,0 +1,116 @@
+<div>
+  <h2>{{ title }}</h2>
+  <div>
+    @if (items === undefined) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    @if (items !== undefined) {
+      <mat-accordion [multi]="true" displayMode="default">
+        @if (!this.archive) {
+          <mat-slide-toggle [checked]="hideCompletedTasks" (change)="handleHideTasks($event)"
+            >Hide completed tasks</mat-slide-toggle
+          >
+        }
+        @if (items.size === 0) {
+          <p>No items found</p>
+        }
+        @if (items.size > 0) {
+          @for (item of items; track item[0]; let index = $index) {
+            <mat-expansion-panel [expanded]="true" class="white-border">
+              <mat-expansion-panel-header>
+                <mat-panel-title>PR {{ item[0] }}</mat-panel-title>
+                <mat-panel-description>PR Description {{ item[0] }}</mat-panel-description>
+              </mat-expansion-panel-header>
+
+              @for (sprintItem of item[1]; track sprintItem[0]; let index = $index) {
+                <mat-expansion-panel [expanded]="true" class="white-border">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Sprint {{ sprintItem[0] }}</mat-panel-title>
+                    <mat-panel-description>Sprint Description {{ sprintItem[0] }}</mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <table
+                    mat-table
+                    [dataSource]="sprintItem[1]"
+                    multiTemplateDataRows
+                    class="mat-elevation-z8 white-border"
+                  >
+                    <ng-container matColumnDef="completed">
+                      <th mat-header-cell *matHeaderCellDef>Completed</th>
+                      <td mat-cell *matCellDef="let element">
+                        <section class="example-section">
+                          <mat-checkbox
+                            id="completed-checkbox-{{ element['id'] }}"
+                            (change)="onCheckboxChange($event, element)"
+                            [checked]="element['completed']"
+                            [disabled]="completedCheckboxDisabled(element)"
+                          ></mat-checkbox>
+                        </section>
+                      </td>
+                    </ng-container>
+
+                    @for (column of columnsToDisplay; track column) {
+                      <ng-container matColumnDef="{{ column }}">
+                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+                      </ng-container>
+                    }
+                    <ng-container matColumnDef="expand">
+                      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                      <td mat-cell *matCellDef="let element">
+                        <button
+                          mat-icon-button
+                          aria-label="expand row"
+                          (click)="handleRowExpansion($event, element, true)"
+                        >
+                          @if (expandedElementId === element['id']) {
+                            <mat-icon>keyboard_arrow_up</mat-icon>
+                          } @else {
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                          }
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    @if (!this.archive) {
+                      <ng-container matColumnDef="archive">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">Archive</th>
+                        <td mat-cell *matCellDef="let element">
+                          <button mat-icon-button aria-label="archive" (click)="handleArchive($event, element)">
+                            <mat-icon>archive</mat-icon>
+                          </button>
+                        </td>
+                      </ng-container>
+                    }
+
+                    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                    <ng-container matColumnDef="expandedDetail">
+                      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                        <div
+                          class="example-element-detail"
+                          [@detailExpand]="element['id'] === expandedElementId ? 'expanded' : 'collapsed'"
+                        >
+                          <app-todo-item [item]="element"></app-todo-item>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr
+                      mat-row
+                      *matRowDef="let element; columns: columnsToDisplayWithExpand"
+                      class="example-element-row"
+                      [class.example-expanded-row]="expandedElementId === element['id']"
+                      (click)="handleRowExpansion($event, element)"
+                    ></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                  </table>
+                </mat-expansion-panel>
+              }
+            </mat-expansion-panel>
+          }
+        }
+      </mat-accordion>
+    }
+  </div>
+</div>

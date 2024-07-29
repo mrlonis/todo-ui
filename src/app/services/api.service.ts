@@ -7,27 +7,39 @@ import { TodoItem } from '../interfaces';
   providedIn: 'root',
 })
 export class ApiService {
+  private baseUrl = 'http://localhost:8080';
+  private route = 'api/todo';
+  private routeUrl = `${this.baseUrl}/${this.route}`;
+
   constructor(private httpClient: HttpClient) {}
 
   getTodoItems(): Observable<TodoItem[]> {
-    return this.httpClient.get<TodoItem[]>('http://localhost:8080/api/todo/items');
+    return this.httpClient.get<TodoItem[]>(`${this.routeUrl}/items`);
   }
 
   createTodoItem(todoItem: TodoItem): Observable<TodoItem> {
-    return this.httpClient.post<TodoItem>('http://localhost:8080/api/todo/item', todoItem);
+    return this.httpClient.post<TodoItem>(`${this.routeUrl}/item`, todoItem);
   }
 
   getTodoItemsByPi(): Observable<Record<string, TodoItem[]>> {
-    return this.httpClient.get<Record<string, TodoItem[]>>('http://localhost:8080/api/todo/itemsByPi');
+    return this.httpClient.get<Record<string, TodoItem[]>>(`${this.routeUrl}/itemsByPi`);
   }
 
-  getTodoItemsByPiAndBySprint(): Observable<Record<string, Record<number, TodoItem[]>>> {
-    return this.httpClient.get<Record<string, Record<number, TodoItem[]>>>(
-      'http://localhost:8080/api/todo/itemsByPiAndBySprint',
-    );
+  getTodoItemsByPiAndBySprint(
+    hideCompleted: boolean,
+    archived: boolean,
+  ): Observable<Record<string, Record<string, TodoItem[]>>> {
+    let routeUrl = `${this.routeUrl}/itemsByPiAndBySprint`;
+    if (archived) {
+      routeUrl += '?archived=true';
+    } else {
+      routeUrl += `?hideCompleted=${hideCompleted}`;
+    }
+
+    return this.httpClient.get<Record<string, Record<string, TodoItem[]>>>(routeUrl);
   }
 
   updateTodoItem(todoItem: TodoItem): Observable<TodoItem> {
-    return this.httpClient.post<TodoItem>('http://localhost:8080/api/todo/item', todoItem);
+    return this.httpClient.post<TodoItem>(`${this.routeUrl}/item`, todoItem);
   }
 }
