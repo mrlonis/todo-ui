@@ -9,12 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
+import { AddNewPiDialogComponent, AddNewPiDialogData } from '../../components/add-new-pi-dialog';
+import { AddNewSprintDialogComponent, AddNewSprintDialogData } from '../../components/add-new-sprint-dialog';
+import {
+  CreateItemDialogComponent,
+  CreateItemDialogData,
+} from '../../components/create-item-dialog/create-item-dialog.component';
+import { TodoItemComponent } from '../../components/todo-item/todo-item.component';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
-import { AddNewPiDialogComponent, AddNewPiDialogData } from '../add-new-pi-dialog';
-import { AddNewSprintDialogComponent, AddNewSprintDialogData } from '../add-new-sprint-dialog';
-import { CreateItemDialogComponent, CreateItemDialogData } from '../create-item-dialog/create-item-dialog.component';
-import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({
   selector: 'app-todo-items',

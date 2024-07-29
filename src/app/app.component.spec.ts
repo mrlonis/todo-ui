@@ -6,7 +6,7 @@ import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { TodoItemsComponent } from './components';
+import { TodoItemsComponent } from './pages';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

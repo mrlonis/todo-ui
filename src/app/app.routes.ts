@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PageNotFoundComponent, TodoItemsComponent } from './components';
+import { PageNotFoundComponent, TodoItemsComponent } from './pages';
 
 export const routes: Routes = [
   { path: 'home', component: TodoItemsComponent },
