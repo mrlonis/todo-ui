@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { BaseTodoItemsComponent } from '../../components';
 
 @Component({
   selector: 'app-archived-items',
   standalone: true,
-  imports: [],
+  imports: [BaseTodoItemsComponent],
   templateUrl: './archived-items.component.html',
   styleUrl: './archived-items.component.scss',
 })

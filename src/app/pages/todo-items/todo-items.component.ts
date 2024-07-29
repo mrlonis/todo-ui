@@ -1,105 +1,53 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Dialog, DialogModule } from '@angular/cdk/dialog';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from '@angular/cdk/dialog';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatTableModule } from '@angular/material/table';
-import { AddNewPiDialogComponent, AddNewPiDialogData } from '../../components/add-new-pi-dialog';
-import { AddNewSprintDialogComponent, AddNewSprintDialogData } from '../../components/add-new-sprint-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import {
+  AddNewPiDialogComponent,
+  AddNewPiDialogData,
+  AddNewSprintDialogComponent,
+  AddNewSprintDialogData,
+  BaseTodoItemsComponent,
   CreateItemDialogComponent,
   CreateItemDialogData,
-} from '../../components/create-item-dialog/create-item-dialog.component';
-import { TodoItemComponent } from '../../components/todo-item/todo-item.component';
+  TodoItemComponent,
+} from '../../components';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
 
 @Component({
   selector: 'app-todo-items',
   standalone: true,
-  imports: [
-    DialogModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatProgressBarModule,
-    MatSlideToggleModule,
-    MatIconModule,
-    TodoItemComponent,
-    ReactiveFormsModule,
-  ],
+  imports: [BaseTodoItemsComponent, DialogModule, MatButtonModule, MatDialogModule, TodoItemComponent],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
 })
-export class TodoItemsComponent implements OnInit {
-  columnsToDisplay = ['title', 'jiraUrl'];
-  columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
-  expandedElementId?: number;
+export class TodoItemsComponent {
+  readonly dialog = inject(MatDialog);
 
-  items?: Map<string, Map<number, TodoItem[]>>;
-  expandedIndex = 0;
-  animal?: string;
-  name?: string;
+  refreshTodoItems: Subject<void> = new Subject<void>();
   pis: string[] = [];
   sprints: number[] = [];
-  hideCompletedTasks = true;
 
-  constructor(
-    private apiService: ApiService,
-    public dialog: Dialog,
-  ) {}
-
-  ngOnInit() {
-    this.getTodoItems();
-  }
-
-  getTodoItems() {
-    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks).subscribe((items) => {
-      const piSet = new Set<string>();
-      const sprintSet = new Set<number>();
-      const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
-
-      for (const pi in items) {
-        piSet.add(pi);
-        const sprintMap = new Map<number, TodoItem[]>();
-        for (const sprint in items[pi]) {
-          const sprintIntValue = parseInt(sprint, 10);
-          sprintSet.add(sprintIntValue);
-          sprintMap.set(sprintIntValue, items[pi][sprint]);
-        }
-        newItemsMap.set(pi, sprintMap);
-      }
-      this.items = newItemsMap;
-
-      this.pis = Array.from(piSet);
-      this.sprints = Array.from(sprintSet);
-    });
-  }
+  constructor(private apiService: ApiService) {}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open<TodoItem>(CreateItemDialogComponent, {
-      width: '500px',
-      data: { pis: this.pis, sprints: this.sprints } as CreateItemDialogData,
-    });
+    const dialogRef = this.dialog.open<CreateItemDialogComponent, CreateItemDialogData, TodoItem>(
+      CreateItemDialogComponent,
+      {
+        width: '500px',
+        data: { pis: this.pis, sprints: this.sprints } as CreateItemDialogData,
+      },
+    );
 
-    dialogRef.closed.subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The Create New TodoItem dialog was closed', result);
       if (result) {
-        this.getTodoItems();
+        this.apiService.createTodoItem(result).subscribe((result) => {
+          console.log('result', result);
+          this.refreshTodoItems.next();
+        });
       } else {
         console.log('No Create New TodoItem result');
       }
@@ -107,12 +55,12 @@ export class TodoItemsComponent implements OnInit {
   }
 
   openNewPiDialog(): void {
-    const dialogRef = this.dialog.open<string>(AddNewPiDialogComponent, {
+    const dialogRef = this.dialog.open<AddNewPiDialogComponent, AddNewPiDialogData, string>(AddNewPiDialogComponent, {
       width: '500px',
       data: { pis: this.pis } as AddNewPiDialogData,
     });
 
-    dialogRef.closed.subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new PI dialog was closed', result);
       if (result !== undefined) {
         this.pis = [...this.pis, result];
@@ -123,12 +71,15 @@ export class TodoItemsComponent implements OnInit {
   }
 
   openNewSprintDialog(): void {
-    const dialogRef = this.dialog.open<number>(AddNewSprintDialogComponent, {
-      width: '500px',
-      data: { sprints: this.sprints } as AddNewSprintDialogData,
-    });
+    const dialogRef = this.dialog.open<AddNewSprintDialogComponent, AddNewSprintDialogData, number>(
+      AddNewSprintDialogComponent,
+      {
+        width: '500px',
+        data: { sprints: this.sprints } as AddNewSprintDialogData,
+      },
+    );
 
-    dialogRef.closed.subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new sprint dialog was closed', result);
       if (result !== undefined) {
         this.sprints = [...this.sprints, result];
@@ -138,40 +89,11 @@ export class TodoItemsComponent implements OnInit {
     });
   }
 
-  onCheckboxChange(event: MatCheckboxChange, item: TodoItem) {
-    console.log('Checkbox changed', event, item);
-    item.completed = !item.completed;
-    this.apiService.updateTodoItem(item).subscribe((updatedItem) => {
-      console.log('Updated item', updatedItem);
-      this.getTodoItems();
-    });
+  setPis(pis: string[]): void {
+    this.pis = pis;
   }
 
-  handleRowExpansion(event: Event, element: TodoItem, stopPropagation = false) {
-    console.log('Row expansion', event, element, stopPropagation);
-
-    // Check if event target id contains completed-checkbox, If it does, ignore the event (but still stop propagation if desired)
-    if ((event.target as HTMLElement).id.includes('completed-checkbox')) {
-      console.log('Ignoring row expansion event because it was triggered by the checkbox');
-      if (stopPropagation) {
-        console.log('Stopping propagation');
-        event.stopPropagation();
-      }
-      return;
-    }
-
-    console.log('Expanding element', element);
-    this.expandedElementId = this.expandedElementId === element.id ? undefined : element.id;
-    console.log('Expanded element', this.expandedElementId);
-    if (stopPropagation) {
-      console.log('Stopping propagation');
-      event.stopPropagation();
-    }
-  }
-
-  handleHideTasks(event: MatSlideToggleChange) {
-    console.log('Hide completed tasks', event);
-    this.hideCompletedTasks = event.checked;
-    this.getTodoItems();
+  setSprints(sprints: number[]): void {
+    this.sprints = sprints;
   }
 }

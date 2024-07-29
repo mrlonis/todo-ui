@@ -1,18 +1,29 @@
-<mat-card appearance="outlined">
-  <mat-card-content>
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Sprint</mat-label>
-        <input matInput formControlName="formControl" placeholder="Ex: 1" />
-        @if (formGroup.controls.formControl.hasError('required')) {
-          <mat-error>Sprint is <strong>required</strong></mat-error>
-        }
-      </mat-form-field>
-      <div>
-        <p>Complete the form to enable button.</p>
-        <button mat-flat-button type="submit" [disabled]="!formGroup.valid">Add</button>
-        <button mat-flat-button (click)="dialogRef.close()">Cancel</button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+<mat-dialog-content class="mat-typography">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <form [formGroup]="formGroup">
+        <mat-form-field>
+          <mat-label>Sprint</mat-label>
+          <input matInput formControlName="formControl" placeholder="Ex: 1" />
+          @if (formGroup.controls.formControl.hasError('required')) {
+            <mat-error>Sprint is <strong>required</strong></mat-error>
+          }
+          @if (formGroup.controls.formControl.hasError('duplicateSprint')) {
+            <mat-error>Sprint already exists</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    [disabled]="!formGroup.valid"
+    [mat-dialog-close]="this.formGroup.controls.formControl.value"
+    cdkFocusInitial
+  >
+    Add
+  </button>
+</mat-dialog-actions>

@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +36,7 @@ export interface TestingUrlFormGroupArray {
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -70,7 +72,6 @@ export class CreateItemDialogComponent {
     cloudForgeConsoleUrl: new FormControl<string | null>(null),
     releaseRequestUrl: new FormControl<string | null>(null),
     urlsUsedForTesting: this.urlsUsedForTestingFormGroup,
-    completed: new FormControl<boolean>(false, { nonNullable: true }),
     oneNoteUrl: new FormControl<string | null>(null),
   });
 
@@ -96,22 +97,12 @@ export class CreateItemDialogComponent {
       urlsUsedForTesting: this.getUrlsUsedForTestingFormControlsAsArray()
         .filter((testingUrl) => testingUrl.control.value !== null)
         .map((testingUrl) => testingUrl.control.value) as string[],
-      completed: this.createItemDialogForm.controls.completed.value ?? false,
+      completed: false,
       oneNoteUrl: this.createItemDialogForm.controls.oneNoteUrl.value ?? undefined,
       pi: this.createItemDialogForm.controls.piFormControl.value,
       sprint: this.createItemDialogForm.controls.sprintFormControl.value,
       type: this.createItemDialogForm.controls.typeFormControl.value,
     } as TodoItem;
-  }
-
-  onSubmit() {
-    console.log('onSubmit');
-    const todoItem = this.getTodoItem();
-    console.log('todoItem', todoItem);
-    this.apiService.createTodoItem(todoItem).subscribe((result) => {
-      console.log('result', result);
-      this.dialogRef.close(result);
-    });
   }
 
   getPrUrlFormControlsAsArray(): PrUrlFormGroupArray[] {

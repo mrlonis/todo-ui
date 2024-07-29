@@ -1,107 +1,108 @@
-<mat-card appearance="outlined">
-  <mat-card-content
-    ><form [formGroup]="createItemDialogForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input matInput formControlName="titleFormControl" placeholder="Ex: [CIAE-#####]: Add code to solve things" />
-        @if (createItemDialogForm.controls.titleFormControl.hasError('required')) {
-          <mat-error>Title is <strong>required</strong></mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>JIRA URL</mat-label>
-        <input matInput formControlName="jiraUrlFormControl" placeholder="Ex: https://jira.com/CIAE-#####" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>PI</mat-label>
-        <mat-select formControlName="piFormControl">
-          @for (pi of pis; track pi) {
-            <mat-option [value]="pi">{{ pi }}</mat-option>
+<h2 mat-dialog-title>Install Angular</h2>
+<mat-dialog-content class="container mat-typography">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <form [formGroup]="createItemDialogForm">
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="titleFormControl" placeholder="Ex: [CIAE-#####]: Add code to solve things" />
+          @if (createItemDialogForm.controls.titleFormControl.hasError('required')) {
+            <mat-error>Title is <strong>required</strong></mat-error>
           }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Sprint</mat-label>
-        <mat-select formControlName="sprintFormControl">
-          @for (sprint of sprints; track sprint) {
-            <mat-option [value]="sprint">{{ sprint }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Type</mat-label>
-        <mat-select formControlName="typeFormControl">
-          @for (todoItemType of todoItemTypes; track todoItemType) {
-            <mat-option [value]="todoItemType">{{ todoItemType }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <div formGroupName="prUrls">
-        <button mat-flat-button type="button" (click)="addNewPrUrl()">Add New PR URL</button>
-        @if (this.prUrlsFormGroupAsArray.length === 0) {
-          <div>No PR URLs</div>
-        }
-        @if (this.prUrlsFormGroupAsArray.length > 0) {
-          <mat-list role="list">
-            @for (item of getPrUrlFormControlsAsArray(); track item.name; let index = $index) {
-              <mat-list-item role="listitem"
-                ><mat-form-field>
-                  <mat-label>PR Url</mat-label>
-                  <input
-                    matInput
-                    placeholder="Ex: https://github.com"
-                    formControlName="{{ item.name }}" /></mat-form-field
-                ><button mat-flat-button type="button" (click)="removePrUrl(item.name)">
-                  Remove PR Url
-                </button></mat-list-item
-              >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>JIRA URL</mat-label>
+          <input matInput formControlName="jiraUrlFormControl" placeholder="Ex: https://jira.com/CIAE-#####" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>PI</mat-label>
+          <mat-select formControlName="piFormControl">
+            @for (pi of pis; track pi) {
+              <mat-option [value]="pi">{{ pi }}</mat-option>
             }
-          </mat-list>
-        }
-      </div>
-      <mat-divider></mat-divider>
-      <mat-form-field>
-        <mat-label>CloudForge Console URL</mat-label>
-        <input matInput formControlName="cloudForgeConsoleUrl" placeholder="Ex: https://fake.com" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Release Request URL</mat-label>
-        <input matInput formControlName="releaseRequestUrl" placeholder="Ex: https://fake.com" />
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <div formGroupName="urlsUsedForTesting">
-        <button mat-flat-button type="button" (click)="addNewTestingUrl()">Add New URL Used For Testing</button>
-        @if (this.urlsUsedForTestingFormGroupAsArray.length === 0) {
-          <div>No URLs Used For Testing</div>
-        }
-        @if (this.urlsUsedForTestingFormGroupAsArray.length > 0) {
-          <mat-list role="list">
-            @for (item of urlsUsedForTestingFormGroupAsArray; track item.name; let index = $index) {
-              <mat-list-item role="listitem"
-                ><mat-form-field>
-                  <mat-label>URL Used For Testing</mat-label>
-                  <input matInput placeholder="Ex: https://github.com" formControlName="{{ item.name }}"
-                /></mat-form-field>
-                <button mat-flat-button type="button" (click)="removeTestingUrl(item.name)">
-                  Remove URL Used For Testing
-                </button>
-              </mat-list-item>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Sprint</mat-label>
+          <mat-select formControlName="sprintFormControl">
+            @for (sprint of sprints; track sprint) {
+              <mat-option [value]="sprint">{{ sprint }}</mat-option>
             }
-          </mat-list>
-        }
-      </div>
-      <mat-divider></mat-divider>
-      <mat-form-field>
-        <mat-label>OneNote URL</mat-label>
-        <input matInput formControlName="oneNoteUrl" placeholder="Ex: https://office.com/OneNote" />
-      </mat-form-field>
-      <mat-checkbox formControlName="completed">Completed</mat-checkbox>
-      <div>
-        <p>Complete the form to enable button.</p>
-        <button mat-flat-button type="submit" [disabled]="!createItemDialogForm.valid">Create</button>
-        <button mat-flat-button (click)="dialogRef.close()">Cancel</button>
-      </div>
-    </form></mat-card-content
-  >
-</mat-card>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="typeFormControl">
+            @for (todoItemType of todoItemTypes; track todoItemType) {
+              <mat-option [value]="todoItemType">{{ todoItemType }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <div formGroupName="prUrls">
+          <button mat-flat-button type="button" (click)="addNewPrUrl()">Add New PR URL</button>
+          @if (this.prUrlsFormGroupAsArray.length === 0) {
+            <div>No PR URLs</div>
+          }
+          @if (this.prUrlsFormGroupAsArray.length > 0) {
+            <mat-list role="list">
+              @for (item of getPrUrlFormControlsAsArray(); track item.name; let index = $index) {
+                <mat-list-item role="listitem"
+                  ><mat-form-field>
+                    <mat-label>PR Url</mat-label>
+                    <input
+                      matInput
+                      placeholder="Ex: https://github.com"
+                      formControlName="{{ item.name }}" /></mat-form-field
+                  ><button mat-flat-button type="button" (click)="removePrUrl(item.name)">
+                    Remove PR Url
+                  </button></mat-list-item
+                >
+              }
+            </mat-list>
+          }
+        </div>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <mat-label>CloudForge Console URL</mat-label>
+          <input matInput formControlName="cloudForgeConsoleUrl" placeholder="Ex: https://fake.com" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Release Request URL</mat-label>
+          <input matInput formControlName="releaseRequestUrl" placeholder="Ex: https://fake.com" />
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <div formGroupName="urlsUsedForTesting">
+          <button mat-flat-button type="button" (click)="addNewTestingUrl()">Add New URL Used For Testing</button>
+          @if (this.urlsUsedForTestingFormGroupAsArray.length === 0) {
+            <div>No URLs Used For Testing</div>
+          }
+          @if (this.urlsUsedForTestingFormGroupAsArray.length > 0) {
+            <mat-list role="list">
+              @for (item of urlsUsedForTestingFormGroupAsArray; track item.name; let index = $index) {
+                <mat-list-item role="listitem"
+                  ><mat-form-field>
+                    <mat-label>URL Used For Testing</mat-label>
+                    <input matInput placeholder="Ex: https://github.com" formControlName="{{ item.name }}"
+                  /></mat-form-field>
+                  <button mat-flat-button type="button" (click)="removeTestingUrl(item.name)">
+                    Remove URL Used For Testing
+                  </button>
+                </mat-list-item>
+              }
+            </mat-list>
+          }
+        </div>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <mat-label>OneNote URL</mat-label>
+          <input matInput formControlName="oneNoteUrl" placeholder="Ex: https://office.com/OneNote" />
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="getTodoItem()" cdkFocusInitial>Create</button>
+</mat-dialog-actions>
