@@ -1,12 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
@@ -26,8 +27,10 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
     MatExpansionModule,
     MatTableModule,
     MatProgressBarModule,
+    MatSlideToggleModule,
     MatIconModule,
     TodoItemComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -50,6 +53,7 @@ export class HomeComponent implements OnInit {
   name?: string;
   pis: string[] = [];
   sprints: number[] = [];
+  hideCompletedTasks = true;
 
   constructor(
     private apiService: ApiService,
@@ -61,7 +65,7 @@ export class HomeComponent implements OnInit {
   }
 
   getTodoItems() {
-    this.apiService.getTodoItemsByPiAndBySprint().subscribe((items) => {
+    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks).subscribe((items) => {
       const piSet = new Set<string>();
       const sprintSet = new Set<number>();
       const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
@@ -160,5 +164,11 @@ export class HomeComponent implements OnInit {
       console.log('Stopping propagation');
       event.stopPropagation();
     }
+  }
+
+  handleHideTasks(event: MatSlideToggleChange) {
+    console.log('Hide completed tasks', event);
+    this.hideCompletedTasks = event.checked;
+    this.getTodoItems();
   }
 }

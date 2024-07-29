@@ -21,9 +21,9 @@ export class ApiService {
     return this.httpClient.get<Record<string, TodoItem[]>>('http://localhost:8080/api/todo/itemsByPi');
   }
 
-  getTodoItemsByPiAndBySprint(): Observable<Record<string, Record<number, TodoItem[]>>> {
+  getTodoItemsByPiAndBySprint(hideCompleted: boolean): Observable<Record<string, Record<number, TodoItem[]>>> {
     return this.httpClient.get<Record<string, Record<number, TodoItem[]>>>(
-      'http://localhost:8080/api/todo/itemsByPiAndBySprint',
+      `http://localhost:8080/api/todo/itemsByPiAndBySprint?hideCompleted=${hideCompleted}`,
     );
   }
 

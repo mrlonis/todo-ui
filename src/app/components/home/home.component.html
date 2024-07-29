@@ -13,8 +13,11 @@
   }
   @if (items !== undefined) {
     <mat-accordion [multi]="true" displayMode="default">
+      <mat-slide-toggle [checked]="hideCompletedTasks" (change)="handleHideTasks($event)"
+        >Hide completed tasks</mat-slide-toggle
+      >
       @if (items.size === 0) {
-        <div class="example-accordion-empty">No items found</div>
+        <p>No items found</p>
       }
       @if (items.size > 0) {
         @for (item of items; track item[0]; let index = $index) {
@@ -40,16 +43,12 @@
                   <ng-container matColumnDef="completed">
                     <th mat-header-cell *matHeaderCellDef>Completed</th>
                     <td mat-cell *matCellDef="let element">
-                      {{ element['completed'] }}
                       <section class="example-section">
-                        <p>
-                          <mat-checkbox
-                            id="completed-checkbox-{{ element['id'] }}"
-                            (change)="onCheckboxChange($event, element)"
-                            [checked]="element['completed']"
-                            >Pepperoni</mat-checkbox
-                          >
-                        </p>
+                        <mat-checkbox
+                          id="completed-checkbox-{{ element['id'] }}"
+                          (change)="onCheckboxChange($event, element)"
+                          [checked]="element['completed']"
+                        ></mat-checkbox>
                       </section>
                     </td>
                   </ng-container>
