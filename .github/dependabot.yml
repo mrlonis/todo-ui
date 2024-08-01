@@ -31,6 +31,18 @@ updates:
         update-types:
           - 'patch'
           - 'minor'
+      development-version-updates:
+        applies-to: version-updates
+        dependency-type: development
+        update-types:
+          - 'patch'
+          - 'minor'
+      development-security-updates:
+        applies-to: security-updates
+        dependency-type: development
+        update-types:
+          - 'patch'
+          - 'minor'
     ignore:
       - dependency-name: '@angular*'
         update-types: ['version-update:semver-major']
@@ -38,7 +50,7 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: 'cypress'
         update-types: ['version-update:semver-major']
-      - dependency-name: 'eslint'
+      - dependency-name: '*eslint*'
         update-types: ['version-update:semver-major']
       - dependency-name: 'typescript'
         update-types: ['version-update:semver-major', 'version-update:semver-minor']
