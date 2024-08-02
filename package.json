@@ -2,6 +2,7 @@
   "name": "todo-ui",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "ng build",
     "cypress:headless": "cypress run --config-file cypress/cypress.config.ts --headless -b chrome",
