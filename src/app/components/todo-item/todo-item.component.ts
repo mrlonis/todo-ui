@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { TodoItem } from '../../interfaces';
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [],
+  imports: [MatCardModule],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.scss',
 })

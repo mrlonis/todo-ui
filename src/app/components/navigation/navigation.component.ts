@@ -1,6 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -18,6 +19,7 @@ export interface NavItem {
   imports: [
     MatToolbarModule,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatSidenavModule,
     MatListModule,
