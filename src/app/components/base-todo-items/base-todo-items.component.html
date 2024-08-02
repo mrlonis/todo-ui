@@ -18,8 +18,8 @@
           @for (item of items; track item[0]; let index = $index) {
             <mat-expansion-panel [expanded]="true" class="white-border">
               <mat-expansion-panel-header>
-                <mat-panel-title>PR {{ item[0] }}</mat-panel-title>
-                <mat-panel-description>PR Description {{ item[0] }}</mat-panel-description>
+                <mat-panel-title>PI {{ item[0] }}</mat-panel-title>
+                <mat-panel-description>PI Description {{ item[0] }}</mat-panel-description>
               </mat-expansion-panel-header>
 
               @for (sprintItem of item[1]; track sprintItem[0]; let index = $index) {
@@ -90,7 +90,7 @@
                           class="example-element-detail"
                           [@detailExpand]="element['id'] === expandedElementId ? 'expanded' : 'collapsed'"
                         >
-                          <app-todo-item [item]="element"></app-todo-item>
+                          <app-todo-item [item]="element" class="max-width"></app-todo-item>
                         </div>
                       </td>
                     </ng-container>

@@ -1,49 +1,53 @@
-<div>
-  @if (item) {
-    <table>
-      <tr>
-        <td>Jira Url:</td>
-        <td>{{ item.jiraUrl }}</td>
-      </tr>
-      <tr>
-        <td>PR Urls:</td>
-        <td>
-          <ul>
-            @for (prUrls of item.prUrls; track $index) {
-              <li>{{ prUrls }}</li>
-            }
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td>CloudForge Console:</td>
-        <td>{{ item.cloudForgeConsoleUrl }}</td>
-      </tr>
-      <tr>
-        <td>Release Request Url:</td>
-        <td>{{ item.releaseRequestUrl }}</td>
-      </tr>
-      <tr>
-        <td>Urls Used For Testing:</td>
-        <td>
-          <ul>
-            @for (urlsUsedForTesting of item.urlsUsedForTesting; track $index) {
-              <li>{{ urlsUsedForTesting }}</li>
-            }
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td>OneNote Url:</td>
-        <td>{{ item.oneNoteUrl }}</td>
-      </tr>
-      <tr>
-        <td>Completed:</td>
-        <td>{{ item.completed }}</td>
-      </tr>
-    </table>
-  }
-  @if (!item) {
-    <div>No item found</div>
-  }
-</div>
+<mat-card appearance="outlined" class="max-width">
+  <mat-card-content
+    ><div class="flex-container">
+      @if (item) {
+        <table>
+          <tr>
+            <td>Jira Url:</td>
+            <td>{{ item.jiraUrl }}</td>
+          </tr>
+          <tr>
+            <td>PR Urls:</td>
+            <td>
+              <ul>
+                @for (prUrls of item.prUrls; track $index) {
+                  <li>{{ prUrls }}</li>
+                }
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>CloudForge Console:</td>
+            <td>{{ item.cloudForgeConsoleUrl }}</td>
+          </tr>
+          <tr>
+            <td>Release Request Url:</td>
+            <td>{{ item.releaseRequestUrl }}</td>
+          </tr>
+          <tr>
+            <td>Urls Used For Testing:</td>
+            <td>
+              <ul>
+                @for (urlsUsedForTesting of item.urlsUsedForTesting; track $index) {
+                  <li>{{ urlsUsedForTesting }}</li>
+                }
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>OneNote Url:</td>
+            <td>{{ item.oneNoteUrl }}</td>
+          </tr>
+          <tr>
+            <td>Completed:</td>
+            <td>{{ item.completed }}</td>
+          </tr>
+        </table>
+      }
+      @if (!item) {
+        <div>No item found</div>
+      }
+    </div></mat-card-content
+  >
+</mat-card>
