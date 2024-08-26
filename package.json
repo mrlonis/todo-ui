@@ -43,7 +43,7 @@
     "@types/node": "^20.16.1",
     "angular-eslint": "^18.3.0",
     "cypress": "^13.13.3",
-    "eslint": "^9.9.0",
+    "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-cypress": "^3.5.0",
     "husky": "^9.1.5",
@@ -58,7 +58,7 @@
     "prettier": "^3.3.3",
     "start-server-and-test": "^2.0.5",
     "typescript": "~5.5.2",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.3.0"
   },
   "engines": {
     "node": "^20.11.1",
