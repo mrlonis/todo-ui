@@ -41,7 +41,7 @@
     "@angular/compiler-cli": "^18.2.3",
     "@types/jasmine": "^5.1.0",
     "@types/node": "^20.16.5",
-    "angular-eslint": "^18.3.0",
+    "angular-eslint": "^18.3.1",
     "cypress": "^13.14.2",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
