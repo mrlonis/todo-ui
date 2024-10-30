@@ -8,11 +8,11 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     allow:
       - dependency-type: 'all'
     open-pull-requests-limit: 99
@@ -21,6 +21,7 @@ updates:
         applies-to: version-updates
         patterns:
           - '@angular*'
+          - 'ngx*'
         update-types:
           - 'minor'
           - 'patch'
@@ -28,6 +29,7 @@ updates:
         applies-to: security-updates
         patterns:
           - '@angular*'
+          - 'ngx*'
         update-types:
           - 'patch'
           - 'minor'
@@ -58,11 +60,17 @@ updates:
     ignore:
       - dependency-name: '@angular*'
         update-types: ['version-update:semver-major']
+      - dependency-name: '@types/iframe-resizer'
+        update-types: ['version-update:semver-major']
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
       - dependency-name: 'cypress'
         update-types: ['version-update:semver-major']
       - dependency-name: '*eslint*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'iframe-resizer'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'ngx*'
         update-types: ['version-update:semver-major']
       - dependency-name: 'typescript'
         update-types: ['version-update:semver-major', 'version-update:semver-minor']
