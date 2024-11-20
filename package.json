@@ -20,6 +20,17 @@
     "test:cypress:open": "start-server-and-test start http://localhost:4200 cypress:open",
     "watch": "ng build --watch --configuration development"
   },
+  "lint-staged": {
+    "*.{css,html,js,jsx,json,md,ts,tsx,scss}": [
+      "prettier --write"
+    ],
+    "cypress/**/*.{html,js,jsx,ts,tsx}": [
+      "ng-lint-staged lint --fix --"
+    ],
+    "src/**/*.{html,js,jsx,ts,tsx}": [
+      "ng-lint-staged lint --fix --"
+    ]
+  },
   "dependencies": {
     "@angular/animations": "^18.2.12",
     "@angular/cdk": "^18.2.13",
@@ -40,28 +51,36 @@
     "@angular/cli": "^18.2.12",
     "@angular/compiler-cli": "^18.2.12",
     "@types/jasmine": "^5.1.0",
-    "@types/node": "^20.17.6",
+    "@types/node": "^22",
     "angular-eslint": "^18.4.0",
     "cypress": "^13.15.2",
-    "eslint": "^9.15.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-cypress": "^3.6.0",
-    "husky": "^9.1.7",
-    "jasmine-core": "^5.4.0",
-    "karma": "^6.4.4",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-coverage": "^2.2.0",
-    "karma-jasmine": "^5.1.0",
-    "karma-jasmine-html-reporter": "^2.1.0",
-    "lint-staged": "^15.2.10",
-    "ng-lint-staged": "^12.0.4",
-    "prettier": "^3.3.3",
-    "start-server-and-test": "^2.0.8",
-    "typescript": "~5.5.2",
-    "typescript-eslint": "^8.15.0"
+    "eslint": "^9",
+    "eslint-config-prettier": "^9",
+    "eslint-import-resolver-typescript": "^3",
+    "eslint-plugin-cypress": "^4",
+    "eslint-plugin-depend": "~0.12.0",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-jasmine": "^4.2.2",
+    "eslint-plugin-prettier": "^5",
+    "husky": "^9",
+    "jasmine-core": "^5",
+    "karma": "^6",
+    "karma-chrome-launcher": "^3",
+    "karma-coverage": "^2",
+    "karma-edge-launcher": "~0.4",
+    "karma-firefox-launcher": "^2",
+    "karma-jasmine": "^5",
+    "karma-jasmine-html-reporter": "^2",
+    "karma-junit-reporter": "^2",
+    "lint-staged": "^15",
+    "ng-lint-staged": "^12",
+    "prettier": "^3",
+    "start-server-and-test": "^2",
+    "typescript": "~5.5",
+    "typescript-eslint": "^8.12.2"
   },
   "engines": {
-    "node": "^20.11.1",
-    "npm": "^10.2.4"
+    "node": "^22",
+    "npm": "^10"
   }
 }
