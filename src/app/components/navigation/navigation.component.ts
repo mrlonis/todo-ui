@@ -48,11 +48,13 @@ export class NavigationComponent implements OnDestroy {
       });
     } catch (e) {
       console.error(e);
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       this.mobileQuery.addListener(this._mobileQueryListener);
     }
   }
 
   ngOnDestroy(): void {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 }

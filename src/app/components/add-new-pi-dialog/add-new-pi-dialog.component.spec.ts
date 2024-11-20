@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AddNewPiDialogComponent, AddNewPiDialogData } from './add-new-pi-dialog.component';
 
