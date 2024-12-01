@@ -30,7 +30,6 @@ export interface TestingUrlFormGroupArray {
 
 @Component({
   selector: 'app-create-item-dialog',
-  standalone: true,
   imports: [
     FormsModule,
     MatButtonModule,

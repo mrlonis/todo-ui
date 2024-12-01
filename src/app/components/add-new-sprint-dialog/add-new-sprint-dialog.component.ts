@@ -30,7 +30,6 @@ export function duplicateSprintValidator(sprints: number[]): ValidatorFn {
 
 @Component({
   selector: 'app-add-new-sprint-dialog',
-  standalone: true,
   imports: [
     FormsModule,
     MatButtonModule,

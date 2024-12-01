@@ -30,7 +30,6 @@ export function duplicatePiValidator(pis: string[]): ValidatorFn {
 
 @Component({
   selector: 'app-add-new-pi-dialog',
-  standalone: true,
   imports: [
     FormsModule,
     MatButtonModule,
