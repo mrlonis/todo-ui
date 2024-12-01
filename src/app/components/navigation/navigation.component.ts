@@ -15,7 +15,6 @@ export interface NavItem {
 
 @Component({
   selector: 'app-navigation',
-  standalone: true,
   imports: [
     MatToolbarModule,
     MatButtonModule,

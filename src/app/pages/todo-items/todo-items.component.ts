@@ -18,7 +18,6 @@ import { ApiService } from '../../services';
 
 @Component({
   selector: 'app-todo-items',
-  standalone: true,
   imports: [BaseTodoItemsComponent, DialogModule, MatButtonModule, MatDialogModule, TodoItemComponent],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss',

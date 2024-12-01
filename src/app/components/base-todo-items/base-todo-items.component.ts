@@ -14,7 +14,6 @@ import { TodoItemComponent } from '../todo-item';
 
 @Component({
   selector: 'app-base-todo-items',
-  standalone: true,
   imports: [
     FormsModule,
     MatCheckboxModule,
