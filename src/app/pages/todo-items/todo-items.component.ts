@@ -11,14 +11,13 @@ import {
   BaseTodoItemsComponent,
   CreateItemDialogComponent,
   CreateItemDialogData,
-  TodoItemComponent,
 } from '../../components';
 import { TodoItem } from '../../interfaces';
 import { ApiService } from '../../services';
 
 @Component({
   selector: 'app-todo-items',
-  imports: [BaseTodoItemsComponent, DialogModule, MatButtonModule, MatDialogModule, TodoItemComponent],
+  imports: [BaseTodoItemsComponent, DialogModule, MatButtonModule, MatDialogModule],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss',
 })
@@ -29,7 +28,7 @@ export class TodoItemsComponent {
   pis: string[] = [];
   sprints: number[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open<CreateItemDialogComponent, CreateItemDialogData, TodoItem>(
@@ -61,7 +60,7 @@ export class TodoItemsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new PI dialog was closed', result);
-      if (result !== undefined) {
+      if (result) {
         this.pis = [...this.pis, result];
       } else {
         console.log('No add new PI result');
@@ -70,7 +69,7 @@ export class TodoItemsComponent {
   }
 
   openNewSprintDialog(): void {
-    const dialogRef = this.dialog.open<AddNewSprintDialogComponent, AddNewSprintDialogData, number>(
+    const dialogRef = this.dialog.open<AddNewSprintDialogComponent, AddNewSprintDialogData, number | string>(
       AddNewSprintDialogComponent,
       {
         width: '500px',
@@ -80,7 +79,10 @@ export class TodoItemsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new sprint dialog was closed', result);
-      if (result !== undefined) {
+      if (typeof result === 'string') {
+        result = parseInt(result, 10);
+      }
+      if (result !== undefined && !isNaN(result)) {
         this.sprints = [...this.sprints, result];
       } else {
         console.log('No add new sprint result');
