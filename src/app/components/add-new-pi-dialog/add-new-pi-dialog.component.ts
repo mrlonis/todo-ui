@@ -1,5 +1,5 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -44,13 +44,15 @@ export function duplicatePiValidator(pis: string[]): ValidatorFn {
   styleUrl: './add-new-pi-dialog.component.scss',
 })
 export class AddNewPiDialogComponent {
+  data = inject<AddNewPiDialogData>(DIALOG_DATA);
+
   @Input() pis: string[] = [];
 
   formGroup: FormGroup<{
     formControl: FormControl<string>;
   }>;
 
-  constructor(@Inject(DIALOG_DATA) public data: AddNewPiDialogData) {
+  constructor() {
     this.formGroup = new FormGroup({
       formControl: new FormControl<string>('', {
         nonNullable: true,

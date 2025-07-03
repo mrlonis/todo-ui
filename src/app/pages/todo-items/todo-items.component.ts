@@ -22,13 +22,13 @@ import { ApiService } from '../../services';
   styleUrl: './todo-items.component.scss',
 })
 export class TodoItemsComponent {
+  private readonly apiService = inject(ApiService);
+
   readonly dialog = inject(MatDialog);
 
   refreshTodoItems: Subject<void> = new Subject<void>();
   pis: string[] = [];
   sprints: number[] = [];
-
-  constructor(private readonly apiService: ApiService) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open<CreateItemDialogComponent, CreateItemDialogData, TodoItem>(

@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MetadataApiService {
+  private httpClient = inject(HttpClient);
+
   private baseUrl = 'http://localhost:8080';
   private route = 'api/metadata';
   private routeUrl = `${this.baseUrl}/${this.route}`;
-
-  constructor(private httpClient: HttpClient) {}
 
   getAllPis(): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.routeUrl}/pis`);

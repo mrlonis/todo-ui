@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TodoItem } from '../interfaces';
 
@@ -7,11 +7,11 @@ import { TodoItem } from '../interfaces';
   providedIn: 'root',
 })
 export class ApiService {
+  private httpClient = inject(HttpClient);
+
   private baseUrl = 'http://localhost:8080';
   private route = 'api/todo';
   private routeUrl = `${this.baseUrl}/${this.route}`;
-
-  constructor(private httpClient: HttpClient) {}
 
   getTodoItems(): Observable<TodoItem[]> {
     return this.httpClient.get<TodoItem[]>(`${this.routeUrl}/items`);
