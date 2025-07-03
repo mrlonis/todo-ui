@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -47,6 +47,10 @@ export interface TestingUrlFormGroupArray {
   styleUrl: './create-item-dialog.component.scss',
 })
 export class CreateItemDialogComponent {
+  dialogRef = inject<DialogRef<TodoItem>>(DialogRef);
+  data = inject<CreateItemDialogData>(DIALOG_DATA);
+  private apiService = inject(ApiService);
+
   pis: string[];
   sprints: number[];
 
@@ -74,11 +78,9 @@ export class CreateItemDialogComponent {
     oneNoteUrl: new FormControl<string | null>(null),
   });
 
-  constructor(
-    public dialogRef: DialogRef<TodoItem>,
-    @Inject(DIALOG_DATA) public data: CreateItemDialogData,
-    private apiService: ApiService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     console.log('data', data);
     this.pis = data.pis;
     this.sprints = data.sprints;

@@ -1,5 +1,5 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -44,13 +44,15 @@ export function duplicateSprintValidator(sprints: number[]): ValidatorFn {
   styleUrl: './add-new-sprint-dialog.component.scss',
 })
 export class AddNewSprintDialogComponent {
+  data = inject<AddNewSprintDialogData>(DIALOG_DATA);
+
   @Input() sprints: number[] = [];
 
   formGroup: FormGroup<{
     formControl: FormControl<number>;
   }>;
 
-  constructor(@Inject(DIALOG_DATA) public data: AddNewSprintDialogData) {
+  constructor() {
     this.formGroup = new FormGroup({
       formControl: new FormControl<number>(0, {
         nonNullable: true,

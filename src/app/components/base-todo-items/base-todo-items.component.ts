@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -36,6 +36,9 @@ import { TodoItemComponent } from '../todo-item';
   ],
 })
 export class BaseTodoItemsComponent implements OnInit, OnDestroy {
+  private apiService = inject(ApiService);
+  private metadataApiService = inject(MetadataApiService);
+
   private eventsSubscription?: Subscription;
   @Input() title = '';
   @Input() archive = false;
@@ -50,11 +53,6 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   items?: Map<string, Map<number, TodoItem[]>>;
   expandedIndex = 0;
   hideCompletedTasks = true;
-
-  constructor(
-    private apiService: ApiService,
-    private metadataApiService: MetadataApiService,
-  ) {}
 
   ngOnInit() {
     this.getTodoItems();
