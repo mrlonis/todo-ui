@@ -2,6 +2,20 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.1.
 
+## Upgrading Angular
+
+To upgrade Angular, you can use the `ng update` command. For example, to update to the latest version of Angular, run:
+
+```shell
+npm run ng -- update @angular/core@VERSION @angular/cli@VERSION @angular/material@VERSION angular-eslint@VERSION
+```
+
+Example:
+
+```shell
+npm run ng -- update @angular/core@20 @angular/cli@20 @angular/material@20 angular-eslint@20
+```
+
 ## Development server
 
 Run `npm run start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
