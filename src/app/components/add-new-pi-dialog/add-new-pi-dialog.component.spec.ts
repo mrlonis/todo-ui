@@ -1,6 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AddNewPiDialogComponent, AddNewPiDialogData } from './add-new-pi-dialog.component';
 
 describe('AddNewPiDialogComponent', () => {
@@ -9,7 +8,7 @@ describe('AddNewPiDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddNewPiDialogComponent, NoopAnimationsModule],
+      imports: [AddNewPiDialogComponent],
       providers: [
         { provide: DialogRef, useValue: {} },
         { provide: DIALOG_DATA, useValue: { pis: ['1'] } as AddNewPiDialogData },

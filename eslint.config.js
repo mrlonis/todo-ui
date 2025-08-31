@@ -30,7 +30,7 @@ module.exports = tseslint.config(
         },
       },
     },
-    languageOptions: { parserOptions: { project: true, tsconfigRootDir: '.' } },
+    languageOptions: { parserOptions: { project: true } },
     processor: angular.processInlineTemplates,
     rules: {
       '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'app', style: 'camelCase' }],

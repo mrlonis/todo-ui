@@ -11,6 +11,7 @@ describe('BaseTodoItemsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BaseTodoItemsComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()],
+      animationsEnabled: true,
     }).compileComponents();
 
     fixture = TestBed.createComponent(BaseTodoItemsComponent);
