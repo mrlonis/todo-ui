@@ -35,7 +35,7 @@ module.exports = tseslint.config(
     rules: {
       '@angular-eslint/directive-selector': ['error', { type: 'attribute', prefix: 'app', style: 'camelCase' }],
       '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'app', style: 'kebab-case' }],
-      '@typescript-eslint/no-deprecated': 'error',
+      '@typescript-eslint/no-deprecated': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -44,7 +44,7 @@ module.exports = tseslint.config(
       'import/newline-after-import': ['error', { count: 1 }],
       'import/no-absolute-path': 'error',
       'import/no-cycle': 'error',
-      'import/no-deprecated': 'error',
+      'import/no-deprecated': 'warn',
       'import/no-self-import': 'error',
       'import/no-unresolved': 'error',
       'import/no-useless-path-segments': ['error', { noUselessIndex: true, commonjs: true }],

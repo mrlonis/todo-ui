@@ -7,7 +7,7 @@
     @if (items !== undefined) {
       <mat-accordion [multi]="true" displayMode="default">
         @if (!this.archive) {
-          <mat-slide-toggle [checked]="hideCompletedTasks" (change)="handleHideTasks($event)"
+          <mat-slide-toggle id="hideCompletedTasks" [checked]="hideCompletedTasks" (change)="handleHideTasks($event)"
             >Hide completed tasks</mat-slide-toggle
           >
         }
