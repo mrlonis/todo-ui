@@ -1,6 +1,5 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AddNewSprintDialogComponent, AddNewSprintDialogData } from './add-new-sprint-dialog.component';
 
 describe('AddNewSprintDialogComponent', () => {
@@ -9,7 +8,7 @@ describe('AddNewSprintDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddNewSprintDialogComponent, NoopAnimationsModule],
+      imports: [AddNewSprintDialogComponent],
       providers: [{ provide: DIALOG_DATA, useValue: { sprints: [0] } as AddNewSprintDialogData }],
     }).compileComponents();
 

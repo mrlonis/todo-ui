@@ -51,14 +51,14 @@
     "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.7",
     "@types/jasmine": "^5",
-    "@types/node": "^22",
+    "@types/node": "^24",
     "angular-eslint": "^20.1.1",
-    "cypress": "^13",
+    "cypress": "^15",
     "eslint": "^9.33.0",
-    "eslint-config-prettier": "^9",
-    "eslint-import-resolver-typescript": "^3",
-    "eslint-plugin-cypress": "^4",
-    "eslint-plugin-depend": "~0.12",
+    "eslint-config-prettier": "^10",
+    "eslint-import-resolver-typescript": "^4",
+    "eslint-plugin-cypress": "^5",
+    "eslint-plugin-depend": "^1",
     "eslint-plugin-import": "^2",
     "eslint-plugin-prettier": "^5",
     "husky": "^9",
@@ -75,11 +75,11 @@
     "ng-lint-staged": "^12",
     "prettier": "^3",
     "start-server-and-test": "^2",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9",
     "typescript-eslint": "^8.40.0"
   },
   "engines": {
-    "node": "^22",
-    "npm": "^10"
+    "node": "^24",
+    "npm": "^11"
   }
 }
