@@ -18,7 +18,6 @@ describe('ArchivedItemsComponent', () => {
     fixture.detectChanges();
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   it('should create', () => {
     expect(component).toBeTruthy();
   });
