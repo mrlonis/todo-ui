@@ -70,9 +70,11 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: 'iframe-resizer'
         update-types: ['version-update:semver-major']
+      - dependency-name: 'jsdom'
+        update-types: ['version-update:semver-major']
       - dependency-name: 'ngx*'
         update-types: ['version-update:semver-major']
+      - dependency-name: 'start-server-and-test'
+        update-types: ['version-update:semver-major']
       - dependency-name: 'typescript'
-        update-types: ['version-update:semver-major', 'version-update:semver-minor']
-      - dependency-name: 'zone.js'
         update-types: ['version-update:semver-major', 'version-update:semver-minor']

@@ -13,7 +13,6 @@ describe('ApiService', () => {
     service = TestBed.inject(ApiService);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

@@ -20,7 +20,6 @@ describe('AppComponent', () => {
       });
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
@@ -28,7 +27,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   it(`should have the 'todo-ui' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
