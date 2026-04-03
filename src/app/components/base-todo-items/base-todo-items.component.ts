@@ -1,13 +1,13 @@
 import {
   Component,
   EventEmitter,
-  Input,
   OnDestroy,
   OnInit,
   Output,
   inject,
   ChangeDetectorRef,
   input,
+  output,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
@@ -38,15 +38,15 @@ import { TodoItemComponent } from '../todo-item';
   styleUrl: './base-todo-items.component.scss',
 })
 export class BaseTodoItemsComponent implements OnInit, OnDestroy {
-  private apiService = inject(ApiService);
-  private metadataApiService = inject(MetadataApiService);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly apiService = inject(ApiService);
+  private readonly metadataApiService = inject(MetadataApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private eventsSubscription?: Subscription;
   title = input<string>('');
   archive = input<boolean>(false);
-  @Input() refreshTodoItems?: Observable<void>;
-  @Output() pis = new EventEmitter<string[]>();
+  refreshTodoItems = input<Observable<void> | undefined>();
+  pis = output<string[]>();
   @Output() sprints = new EventEmitter<number[]>();
 
   columnsToDisplay = ['title', 'jiraUrl'];
@@ -59,8 +59,9 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getTodoItems();
-    if (this.refreshTodoItems !== undefined) {
-      this.eventsSubscription = this.refreshTodoItems.subscribe(() => this.getTodoItems());
+    const refreshTodoItemsObservable = this.refreshTodoItems();
+    if (refreshTodoItemsObservable !== undefined) {
+      this.eventsSubscription = refreshTodoItemsObservable.subscribe(() => this.getTodoItems());
     }
 
     if (!this.archive()) {
