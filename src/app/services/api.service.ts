@@ -9,7 +9,7 @@ import { TodoItem } from '../interfaces';
 export class ApiService {
   private httpClient = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:6958';
   private route = 'api/todo';
   private routeUrl = `${this.baseUrl}/${this.route}`;
 

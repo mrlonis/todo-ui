@@ -1,5 +1,14 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectorRef,
+  input,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -27,20 +36,14 @@ import { TodoItemComponent } from '../todo-item';
   ],
   templateUrl: './base-todo-items.component.html',
   styleUrl: './base-todo-items.component.scss',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
 })
 export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private metadataApiService = inject(MetadataApiService);
+  private cdr = inject(ChangeDetectorRef);
 
   private eventsSubscription?: Subscription;
-  @Input() title = '';
+  title = input<string>('');
   @Input() archive = false;
   @Input() refreshTodoItems?: Observable<void>;
   @Output() pis = new EventEmitter<string[]>();
@@ -87,6 +90,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
         newItemsMap.set(pi, sprintMap);
       }
       this.items = newItemsMap;
+      this.cdr.markForCheck();
     });
   }
 
