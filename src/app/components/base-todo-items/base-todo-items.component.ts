@@ -1,14 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  inject,
-  ChangeDetectorRef,
-  input,
-  output,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -47,7 +37,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   archive = input<boolean>(false);
   refreshTodoItems = input<Observable<void> | undefined>();
   pis = output<string[]>();
-  @Output() sprints = new EventEmitter<number[]>();
+  sprints = output<number[]>();
 
   columnsToDisplay = ['title', 'jiraUrl'];
   columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
