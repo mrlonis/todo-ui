@@ -44,7 +44,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
 
   private eventsSubscription?: Subscription;
   title = input<string>('');
-  @Input() archive = false;
+  archive = input<boolean>(false);
   @Input() refreshTodoItems?: Observable<void>;
   @Output() pis = new EventEmitter<string[]>();
   @Output() sprints = new EventEmitter<number[]>();
@@ -63,7 +63,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
       this.eventsSubscription = this.refreshTodoItems.subscribe(() => this.getTodoItems());
     }
 
-    if (!this.archive) {
+    if (!this.archive()) {
       this.columnsToDisplayWithExpand = [...this.columnsToDisplayWithExpand, 'archive'];
     }
 
@@ -78,7 +78,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   }
 
   getTodoItems() {
-    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive).subscribe((response) => {
+    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive()).subscribe((response) => {
       const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
 
       for (const pi in response) {
@@ -141,6 +141,6 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   }
 
   completedCheckboxDisabled(element: TodoItem): boolean {
-    return element.completed && this.archive;
+    return element.completed && this.archive();
   }
 }

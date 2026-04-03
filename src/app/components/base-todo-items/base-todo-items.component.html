@@ -6,7 +6,7 @@
     }
     @if (items !== undefined) {
       <mat-accordion [multi]="true" displayMode="default">
-        @if (!this.archive) {
+        @if (!this.archive()) {
           <mat-slide-toggle id="hideCompletedTasks" [checked]="hideCompletedTasks" (change)="handleHideTasks($event)"
             >Hide completed tasks</mat-slide-toggle
           >
@@ -72,7 +72,7 @@
                       </td>
                     </ng-container>
 
-                    @if (!this.archive) {
+                    @if (!this.archive()) {
                       <ng-container matColumnDef="archive">
                         <th mat-header-cell *matHeaderCellDef aria-label="row actions">Archive</th>
                         <td mat-cell *matCellDef="let element">
