@@ -1,7 +1,7 @@
 // @ts-check
 describe('template spec', () => {
   it('passes', () => {
-    cy.intercept('GET', 'http://localhost:8080/api/todo/itemsByPiAndBySprint?hideCompleted=true', {
+    cy.intercept('GET', 'http://localhost:6958/api/todo/itemsByPiAndBySprint?hideCompleted=true', {
       body: {
         '2': {
           '2': [
@@ -47,10 +47,10 @@ describe('template spec', () => {
         },
       },
     }).as('getItemsHideCompleted');
-    cy.intercept('GET', 'http://localhost:8080/api/metadata/pis', {
+    cy.intercept('GET', 'http://localhost:6958/api/metadata/pis', {
       body: ['1', '3', '2'],
     }).as('getPis');
-    cy.intercept('GET', 'http://localhost:8080/api/metadata/sprints', {
+    cy.intercept('GET', 'http://localhost:6958/api/metadata/sprints', {
       body: [1, 2],
     }).as('getSprints');
 
@@ -60,7 +60,7 @@ describe('template spec', () => {
     cy.wait('@getPis');
     cy.wait('@getSprints');
 
-    cy.intercept('GET', 'http://localhost:8080/api/todo/itemsByPiAndBySprint?hideCompleted=false', {
+    cy.intercept('GET', 'http://localhost:6958/api/todo/itemsByPiAndBySprint?hideCompleted=false', {
       body: {
         '1': {
           '1': [

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { TodoItem } from '../../interfaces';
 
@@ -9,5 +9,5 @@ import { TodoItem } from '../../interfaces';
   styleUrl: './todo-item.component.scss',
 })
 export class TodoItemComponent {
-  @Input() item?: TodoItem;
+  item = input<TodoItem | undefined>();
 }

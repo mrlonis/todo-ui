@@ -1,5 +1,6 @@
 // @ts-check
 const eslint = require('@eslint/js');
+const { defineConfig } = require('eslint/config');
 const angular = require('angular-eslint');
 const tseslint = require('typescript-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
@@ -8,7 +9,7 @@ const importPlugin = require('eslint-plugin-import');
 const cypressPlugin = require('eslint-plugin-cypress/flat');
 const depend = require('eslint-plugin-depend');
 
-module.exports = tseslint.config(
+module.exports = defineConfig([
   {
     files: ['**/*.ts'],
     extends: [
@@ -22,11 +23,10 @@ module.exports = tseslint.config(
       eslintPluginPrettierRecommended,
     ],
     settings: {
-      'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: ['tsconfig.app.json', 'tsconfig.spec.json', 'tsconfig.json', 'cypress/tsconfig.json'],
+          project: ['tsconfig.json', 'cypress/tsconfig.json'],
         },
       },
     },
@@ -69,4 +69,4 @@ module.exports = tseslint.config(
     rules: {},
   },
   cypressPlugin.configs.recommended,
-);
+]);

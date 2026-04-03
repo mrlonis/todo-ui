@@ -1,5 +1,4 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef, input, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -27,24 +26,18 @@ import { TodoItemComponent } from '../todo-item';
   ],
   templateUrl: './base-todo-items.component.html',
   styleUrl: './base-todo-items.component.scss',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
 })
 export class BaseTodoItemsComponent implements OnInit, OnDestroy {
-  private apiService = inject(ApiService);
-  private metadataApiService = inject(MetadataApiService);
+  private readonly apiService = inject(ApiService);
+  private readonly metadataApiService = inject(MetadataApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private eventsSubscription?: Subscription;
-  @Input() title = '';
-  @Input() archive = false;
-  @Input() refreshTodoItems?: Observable<void>;
-  @Output() pis = new EventEmitter<string[]>();
-  @Output() sprints = new EventEmitter<number[]>();
+  title = input<string>('');
+  archive = input<boolean>(false);
+  refreshTodoItems = input<Observable<void> | undefined>();
+  pis = output<string[]>();
+  sprints = output<number[]>();
 
   columnsToDisplay = ['title', 'jiraUrl'];
   columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
@@ -56,11 +49,12 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getTodoItems();
-    if (this.refreshTodoItems !== undefined) {
-      this.eventsSubscription = this.refreshTodoItems.subscribe(() => this.getTodoItems());
+    const refreshTodoItemsObservable = this.refreshTodoItems();
+    if (refreshTodoItemsObservable !== undefined) {
+      this.eventsSubscription = refreshTodoItemsObservable.subscribe(() => this.getTodoItems());
     }
 
-    if (!this.archive) {
+    if (!this.archive()) {
       this.columnsToDisplayWithExpand = [...this.columnsToDisplayWithExpand, 'archive'];
     }
 
@@ -75,7 +69,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   }
 
   getTodoItems() {
-    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive).subscribe((response) => {
+    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive()).subscribe((response) => {
       const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
 
       for (const pi in response) {
@@ -87,6 +81,7 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
         newItemsMap.set(pi, sprintMap);
       }
       this.items = newItemsMap;
+      this.cdr.markForCheck();
     });
   }
 
@@ -137,6 +132,6 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   }
 
   completedCheckboxDisabled(element: TodoItem): boolean {
-    return element.completed && this.archive;
+    return element.completed && this.archive();
   }
 }

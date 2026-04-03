@@ -7,11 +7,11 @@ import { TodoItem } from '../interfaces';
   providedIn: 'root',
 })
 export class ApiService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:8080';
-  private route = 'api/todo';
-  private routeUrl = `${this.baseUrl}/${this.route}`;
+  private readonly baseUrl = 'http://localhost:6958';
+  private readonly route = 'api/todo';
+  private readonly routeUrl = `${this.baseUrl}/${this.route}`;
 
   getTodoItems(): Observable<TodoItem[]> {
     return this.httpClient.get<TodoItem[]>(`${this.routeUrl}/items`);

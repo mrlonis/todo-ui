@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MetadataApiService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:8080';
-  private route = 'api/metadata';
-  private routeUrl = `${this.baseUrl}/${this.route}`;
+  private readonly baseUrl = 'http://localhost:6958';
+  private readonly route = 'api/metadata';
+  private readonly routeUrl = `${this.baseUrl}/${this.route}`;
 
   getAllPis(): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.routeUrl}/pis`);
