@@ -36,7 +36,7 @@ export class NavigationComponent implements OnDestroy {
     { link: '/archive', display: 'Archive' },
   ];
 
-  private _mobileQueryListener: () => void;
+  private _mobileQueryListener: (event: MediaQueryListEvent) => void;
 
   constructor() {
     const changeDetectorRef = inject(ChangeDetectorRef);
@@ -45,9 +45,7 @@ export class NavigationComponent implements OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     try {
-      this.mobileQuery.addEventListener('change', () => {
-        this._mobileQueryListener();
-      });
+      this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     } catch (e) {
       console.error(e);
       // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -56,7 +54,12 @@ export class NavigationComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    try {
+      this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
+    } catch (e) {
+      console.error(e);
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
   }
 }

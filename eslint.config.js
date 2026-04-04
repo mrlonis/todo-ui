@@ -6,7 +6,7 @@ const tseslint = require('typescript-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 const importPlugin = require('eslint-plugin-import');
-const cypressPlugin = require('eslint-plugin-cypress/flat');
+const cypressPlugin = require('eslint-plugin-cypress');
 const depend = require('eslint-plugin-depend');
 
 module.exports = defineConfig([
