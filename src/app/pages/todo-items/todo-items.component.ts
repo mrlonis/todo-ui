@@ -35,7 +35,7 @@ export class TodoItemsComponent {
       CreateItemDialogComponent,
       {
         width: '500px',
-        data: { pis: this.pis, sprints: this.sprints } as CreateItemDialogData,
+        data: { pis: this.pis, sprints: this.sprints },
       },
     );
 
@@ -55,7 +55,7 @@ export class TodoItemsComponent {
   openNewPiDialog(): void {
     const dialogRef = this.dialog.open<AddNewPiDialogComponent, AddNewPiDialogData, string>(AddNewPiDialogComponent, {
       width: '500px',
-      data: { pis: this.pis } as AddNewPiDialogData,
+      data: { pis: this.pis },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -73,7 +73,7 @@ export class TodoItemsComponent {
       AddNewSprintDialogComponent,
       {
         width: '500px',
-        data: { sprints: this.sprints } as AddNewSprintDialogData,
+        data: { sprints: this.sprints },
       },
     );
 
