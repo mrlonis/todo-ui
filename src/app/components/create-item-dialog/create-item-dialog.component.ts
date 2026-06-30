@@ -110,7 +110,7 @@ export class CreateItemDialogComponent {
     const keys = Object.keys(this.prUrlsFormGroup.controls);
     const returnValue = [];
     for (const key of keys) {
-      returnValue.push({ name: key, control: this.prUrlsFormGroup.controls[key] } as PrUrlFormGroupArray);
+      returnValue.push({ name: key, control: this.prUrlsFormGroup.controls[key] });
     }
     this.prUrlsFormGroupAsArray = returnValue;
     return returnValue;
@@ -143,7 +143,7 @@ export class CreateItemDialogComponent {
       returnValue.push({
         name: key,
         control: this.urlsUsedForTestingFormGroup.controls[key],
-      } as TestingUrlFormGroupArray);
+      });
     }
     this.urlsUsedForTestingFormGroupAsArray = returnValue;
     return returnValue;

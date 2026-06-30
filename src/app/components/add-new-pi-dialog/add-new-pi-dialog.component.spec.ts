@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddNewPiDialogComponent, AddNewPiDialogData } from './add-new-pi-dialog.component';
+import { AddNewPiDialogComponent } from './add-new-pi-dialog.component';
 
 describe('AddNewPiDialogComponent', () => {
   let component: AddNewPiDialogComponent;
@@ -11,7 +11,7 @@ describe('AddNewPiDialogComponent', () => {
       imports: [AddNewPiDialogComponent],
       providers: [
         { provide: DialogRef, useValue: {} },
-        { provide: DIALOG_DATA, useValue: { pis: ['1'] } as AddNewPiDialogData },
+        { provide: DIALOG_DATA, useValue: { pis: ['1'] } },
       ],
     }).compileComponents();
 
