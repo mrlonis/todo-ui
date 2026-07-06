@@ -137,3 +137,11 @@ The backend API runs at `http://localhost:6958` and is consumed via `Api` and `M
 - Keep tests deterministic: avoid time, network, and global state coupling unless explicitly mocked.
 - Mock only what is necessary, and prefer lightweight fakes/stubs over deep or brittle mocks.
 - Ensure tests are fast and isolated so they can run reliably in CI.
+- For async timing in unit tests, use Vitest timers (`vi.useFakeTimers`, `vi.runAllTimers`) instead of Jasmine/Zone helpers like `fakeAsync` and `tick`.
+- For component-injected services (for example `MatDialog`), create spies after `TestBed.createComponent(...)` so the child environment injector is initialized.
+- In tests for `BaseTodoItems`, account for all three startup requests from `ngOnInit`: todo items, PIs metadata, and sprints metadata.
+- For Cypress against Angular Material v22:
+  - `mat-slide-toggle` uses an internal `button[role="switch"]` with `aria-checked`, not a checkbox input.
+  - Avoid `cy.clear()` on `matInput` fields when flaky; prefer keystrokes like `{backspace}` or set value + trigger `input`.
+  - Avoid broad `cy.wait([...aliases])` patterns that can leave unconsumed aliases and cause cross-test interference; use targeted waits.
+  - Prefer waiting on stable UI signals (for example rendered metadata text) before opening dialogs or asserting validation state.
