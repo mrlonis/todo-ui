@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit, inject, ChangeDetectorRef, input, output } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+  input,
+  output,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -33,11 +41,11 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
   private eventsSubscription?: Subscription;
-  title = input<string>('');
-  archive = input<boolean>(false);
-  refreshTodoItems = input<Observable<void> | undefined>();
-  pis = output<string[]>();
-  sprints = output<number[]>();
+  readonly title = input<string>('');
+  readonly archive = input<boolean>(false);
+  readonly refreshTodoItems = input<Observable<void> | undefined>();
+  readonly pis = output<string[]>();
+  readonly sprints = output<number[]>();
 
   columnsToDisplay = ['title', 'jiraUrl'];
   columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
@@ -69,20 +77,22 @@ export class BaseTodoItemsComponent implements OnInit, OnDestroy {
   }
 
   getTodoItems() {
-    this.apiService.getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive()).subscribe((response) => {
-      const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
+    this.apiService
+      .getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive())
+      .subscribe((response) => {
+        const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
 
-      for (const pi in response) {
-        const sprintMap = new Map<number, TodoItem[]>();
-        for (const sprint in response[pi]) {
-          const sprintIntValue = parseInt(sprint, 10);
-          sprintMap.set(sprintIntValue, response[pi][sprint]);
+        for (const pi in response) {
+          const sprintMap = new Map<number, TodoItem[]>();
+          for (const sprint in response[pi]) {
+            const sprintIntValue = parseInt(sprint, 10);
+            sprintMap.set(sprintIntValue, response[pi][sprint]);
+          }
+          newItemsMap.set(pi, sprintMap);
         }
-        newItemsMap.set(pi, sprintMap);
-      }
-      this.items = newItemsMap;
-      this.cdr.markForCheck();
-    });
+        this.items = newItemsMap;
+        this.cdr.markForCheck();
+      });
   }
 
   onCheckboxChange(event: MatCheckboxChange, item: TodoItem) {

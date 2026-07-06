@@ -53,10 +53,13 @@ export class TodoItemsComponent {
   }
 
   openNewPiDialog(): void {
-    const dialogRef = this.dialog.open<AddNewPiDialogComponent, AddNewPiDialogData, string>(AddNewPiDialogComponent, {
-      width: '500px',
-      data: { pis: this.pis },
-    });
+    const dialogRef = this.dialog.open<AddNewPiDialogComponent, AddNewPiDialogData, string>(
+      AddNewPiDialogComponent,
+      {
+        width: '500px',
+        data: { pis: this.pis },
+      },
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new PI dialog was closed', result);
@@ -69,13 +72,14 @@ export class TodoItemsComponent {
   }
 
   openNewSprintDialog(): void {
-    const dialogRef = this.dialog.open<AddNewSprintDialogComponent, AddNewSprintDialogData, number | string>(
+    const dialogRef = this.dialog.open<
       AddNewSprintDialogComponent,
-      {
-        width: '500px',
-        data: { sprints: this.sprints },
-      },
-    );
+      AddNewSprintDialogData,
+      number | string
+    >(AddNewSprintDialogComponent, {
+      width: '500px',
+      data: { sprints: this.sprints },
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new sprint dialog was closed', result);

@@ -5,14 +5,22 @@
       <form [formGroup]="createItemDialogForm">
         <mat-form-field>
           <mat-label>Title</mat-label>
-          <input matInput formControlName="titleFormControl" placeholder="Ex: [CIAE-#####]: Add code to solve things" />
+          <input
+            matInput
+            formControlName="titleFormControl"
+            placeholder="Ex: [CIAE-#####]: Add code to solve things"
+          />
           @if (createItemDialogForm.controls.titleFormControl.hasError('required')) {
             <mat-error>Title is <strong>required</strong></mat-error>
           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>JIRA URL</mat-label>
-          <input matInput formControlName="jiraUrlFormControl" placeholder="Ex: https://jira.com/CIAE-#####" />
+          <input
+            matInput
+            formControlName="jiraUrlFormControl"
+            placeholder="Ex: https://jira.com/CIAE-#####"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label>PI</mat-label>
@@ -38,7 +46,7 @@
             }
           </mat-select>
         </mat-form-field>
-        <mat-divider></mat-divider>
+        <mat-divider />
         <div formGroupName="prUrls">
           <button mat-flat-button type="button" (click)="addNewPrUrl()">Add New PR URL</button>
           @if (this.prUrlsFormGroupAsArray.length === 0) {
@@ -62,28 +70,41 @@
             </mat-list>
           }
         </div>
-        <mat-divider></mat-divider>
+        <mat-divider />
         <mat-form-field>
           <mat-label>CloudForge Console URL</mat-label>
-          <input matInput formControlName="cloudForgeConsoleUrl" placeholder="Ex: https://fake.com" />
+          <input
+            matInput
+            formControlName="cloudForgeConsoleUrl"
+            placeholder="Ex: https://fake.com"
+          />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Release Request URL</mat-label>
           <input matInput formControlName="releaseRequestUrl" placeholder="Ex: https://fake.com" />
         </mat-form-field>
-        <mat-divider></mat-divider>
+        <mat-divider />
         <div formGroupName="urlsUsedForTesting">
-          <button mat-flat-button type="button" (click)="addNewTestingUrl()">Add New URL Used For Testing</button>
+          <button mat-flat-button type="button" (click)="addNewTestingUrl()">
+            Add New URL Used For Testing
+          </button>
           @if (this.urlsUsedForTestingFormGroupAsArray.length === 0) {
             <div>No URLs Used For Testing</div>
           }
           @if (this.urlsUsedForTestingFormGroupAsArray.length > 0) {
             <mat-list role="list">
-              @for (item of urlsUsedForTestingFormGroupAsArray; track item.name; let index = $index) {
+              @for (
+                item of urlsUsedForTestingFormGroupAsArray;
+                track item.name;
+                let index = $index
+              ) {
                 <mat-list-item role="listitem"
                   ><mat-form-field>
                     <mat-label>URL Used For Testing</mat-label>
-                    <input matInput placeholder="Ex: https://github.com" formControlName="{{ item.name }}"
+                    <input
+                      matInput
+                      placeholder="Ex: https://github.com"
+                      formControlName="{{ item.name }}"
                   /></mat-form-field>
                   <button mat-flat-button type="button" (click)="removeTestingUrl(item.name)">
                     Remove URL Used For Testing
@@ -93,10 +114,14 @@
             </mat-list>
           }
         </div>
-        <mat-divider></mat-divider>
+        <mat-divider />
         <mat-form-field>
           <mat-label>OneNote URL</mat-label>
-          <input matInput formControlName="oneNoteUrl" placeholder="Ex: https://office.com/OneNote" />
+          <input
+            matInput
+            formControlName="oneNoteUrl"
+            placeholder="Ex: https://office.com/OneNote"
+          />
         </mat-form-field>
       </form>
     </mat-card-content>

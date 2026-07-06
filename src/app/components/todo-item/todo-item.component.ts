@@ -9,5 +9,5 @@ import { TodoItem } from '../../interfaces';
   styleUrl: './todo-item.component.scss',
 })
 export class TodoItemComponent {
-  item = input<TodoItem | undefined>();
+  readonly item = input<TodoItem | undefined>();
 }

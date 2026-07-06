@@ -1,2 +1,1 @@
-npx sort-package-json
 npx lint-staged

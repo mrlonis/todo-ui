@@ -46,7 +46,7 @@ export function duplicatePiValidator(pis: string[]): ValidatorFn {
 export class AddNewPiDialogComponent {
   data = inject<AddNewPiDialogData>(DIALOG_DATA);
 
-  pis = input<string[]>([]);
+  readonly pis = input<string[]>([]);
 
   formGroup: FormGroup<{
     formControl: FormControl<string>;

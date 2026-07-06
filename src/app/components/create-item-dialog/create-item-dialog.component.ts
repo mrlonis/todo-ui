@@ -1,6 +1,13 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -63,13 +70,24 @@ export class CreateItemDialogComponent {
   urlsUsedForTestingFormGroup = new FormGroup<Record<string, AbstractControl<string | null>>>({});
   urlsUsedForTestingFormGroupAsArray: TestingUrlFormGroupArray[] = [];
   createItemDialogForm = new FormGroup({
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    titleFormControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    titleFormControl: new FormControl<string>('', {
+      nonNullable: true,
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      validators: [Validators.required],
+    }),
     jiraUrlFormControl: new FormControl<string | null>(null),
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    piFormControl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    sprintFormControl: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+
+    piFormControl: new FormControl<string>('', {
+      nonNullable: true,
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      validators: [Validators.required],
+    }),
+
+    sprintFormControl: new FormControl<number>(0, {
+      nonNullable: true,
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      validators: [Validators.required],
+    }),
     typeFormControl: new FormControl<TodoItemType>('ASSIGNED', { nonNullable: true }),
     prUrls: this.prUrlsFormGroup,
     cloudForgeConsoleUrl: new FormControl<string | null>(null),
@@ -93,7 +111,8 @@ export class CreateItemDialogComponent {
       prUrls: this.getPrUrlFormControlsAsArray()
         .filter((prUrl) => prUrl.control.value !== null)
         .map((prUrl) => prUrl.control.value) as string[],
-      cloudForgeConsoleUrl: this.createItemDialogForm.controls.cloudForgeConsoleUrl.value ?? undefined,
+      cloudForgeConsoleUrl:
+        this.createItemDialogForm.controls.cloudForgeConsoleUrl.value ?? undefined,
       releaseRequestUrl: this.createItemDialogForm.controls.releaseRequestUrl.value ?? undefined,
       urlsUsedForTesting: this.getUrlsUsedForTestingFormControlsAsArray()
         .filter((testingUrl) => testingUrl.control.value !== null)

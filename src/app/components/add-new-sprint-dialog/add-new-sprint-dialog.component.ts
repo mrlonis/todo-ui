@@ -46,7 +46,7 @@ export function duplicateSprintValidator(sprints: number[]): ValidatorFn {
 export class AddNewSprintDialogComponent {
   data = inject<AddNewSprintDialogData>(DIALOG_DATA);
 
-  sprints = input<number[]>([]);
+  readonly sprints = input<number[]>([]);
 
   formGroup: FormGroup<{
     formControl: FormControl<number>;
