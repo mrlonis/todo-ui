@@ -1,133 +1,68 @@
-// @ts-check
-describe('template spec', () => {
-  it('passes', () => {
-    cy.intercept('GET', 'http://localhost:6958/api/todo/itemsByPiAndBySprint?hideCompleted=true', {
-      body: {
-        '2': {
-          '2': [
-            {
-              id: 2,
-              title: 'fake 2',
-              jiraUrl: '',
-              prUrls: [],
-              cloudForgeConsoleUrl: null,
-              releaseRequestUrl: null,
-              urlsUsedForTesting: [],
-              completed: false,
-              oneNoteUrl: null,
-              createdOn: null,
-              completedOn: null,
-              pi: '2',
-              sprint: 2,
-              type: 'ASSIGNED',
-              archived: false,
-            },
-          ],
-        },
-        '3': {
-          '1': [
-            {
-              id: 3,
-              title: 'fake 3',
-              jiraUrl: null,
-              prUrls: [],
-              cloudForgeConsoleUrl: null,
-              releaseRequestUrl: null,
-              urlsUsedForTesting: [],
-              completed: false,
-              oneNoteUrl: null,
-              createdOn: null,
-              completedOn: null,
-              pi: '3',
-              sprint: 1,
-              type: 'ASSIGNED',
-              archived: false,
-            },
-          ],
-        },
-      },
-    }).as('getItemsHideCompleted');
-    cy.intercept('GET', 'http://localhost:6958/api/metadata/pis', {
-      body: ['1', '3', '2'],
-    }).as('getPis');
-    cy.intercept('GET', 'http://localhost:6958/api/metadata/sprints', {
-      body: [1, 2],
-    }).as('getSprints');
+const API = 'http://localhost:6958/api';
 
-    cy.visit('http://localhost:4200');
+function interceptTodoInit(): void {
+  cy.intercept('GET', `${API}/todo/itemsByPiAndBySprint?hideCompleted=true`, {
+    body: {},
+  }).as('getTodoItems');
+  cy.intercept('GET', `${API}/metadata/pis`, { body: [] });
+  cy.intercept('GET', `${API}/metadata/sprints`, { body: [] });
+}
 
-    cy.wait('@getItemsHideCompleted');
-    cy.wait('@getPis');
-    cy.wait('@getSprints');
+function interceptArchiveInit(): void {
+  cy.intercept('GET', `${API}/todo/itemsByPiAndBySprint?archived=true`, {
+    body: {},
+  }).as('getArchivedItems');
+  cy.intercept('GET', `${API}/metadata/pis`, { body: [] });
+  cy.intercept('GET', `${API}/metadata/sprints`, { body: [] });
+}
 
-    cy.intercept('GET', 'http://localhost:6958/api/todo/itemsByPiAndBySprint?hideCompleted=false', {
-      body: {
-        '1': {
-          '1': [
-            {
-              id: 1,
-              title: 'fake',
-              jiraUrl: 'http://jira.com/fake',
-              prUrls: ['http://github.com/pr/fake'],
-              cloudForgeConsoleUrl: 'http://cloudforge.com/fake',
-              releaseRequestUrl: 'http://release.com/fake',
-              urlsUsedForTesting: ['http://testing.com/fake'],
-              completed: true,
-              oneNoteUrl: 'http://onenote.com/fake',
-              createdOn: null,
-              completedOn: null,
-              pi: '1',
-              sprint: 1,
-              type: 'ASSIGNED',
-              archived: false,
-            },
-          ],
-        },
-        '2': {
-          '2': [
-            {
-              id: 2,
-              title: 'fake 2',
-              jiraUrl: '',
-              prUrls: [],
-              cloudForgeConsoleUrl: null,
-              releaseRequestUrl: null,
-              urlsUsedForTesting: [],
-              completed: false,
-              oneNoteUrl: null,
-              createdOn: null,
-              completedOn: null,
-              pi: '2',
-              sprint: 2,
-              type: 'ASSIGNED',
-              archived: false,
-            },
-          ],
-        },
-        '3': {
-          '1': [
-            {
-              id: 3,
-              title: 'fake 3',
-              jiraUrl: null,
-              prUrls: [],
-              cloudForgeConsoleUrl: null,
-              releaseRequestUrl: null,
-              urlsUsedForTesting: [],
-              completed: false,
-              oneNoteUrl: null,
-              createdOn: null,
-              completedOn: null,
-              pi: '3',
-              sprint: 1,
-              type: 'ASSIGNED',
-              archived: false,
-            },
-          ],
-        },
-      },
-    }).as('getItemsShowCompleted');
+describe('Application', () => {
+  describe('Routing', () => {
+    it('redirects the root path to /todo', () => {
+      interceptTodoInit();
+      cy.visit('/');
+      cy.wait('@getTodoItems');
+      cy.url().should('include', '/todo');
+    });
 
-    cy.get('#hideCompletedTasks').click();
+    it('shows page-not-found for unknown routes', () => {
+      cy.visit('/unknown-route', { failOnStatusCode: false });
+      cy.contains('page-not-found works!').should('be.visible');
+    });
+  });
+
+  describe('Navigation', () => {
+    beforeEach(() => {
+      interceptTodoInit();
+      cy.visit('/todo');
+      cy.wait('@getTodoItems');
+    });
+
+    it('shows the app title in the toolbar', () => {
+      cy.get('h1.example-app-name').should('contain.text', 'TODO Items');
+    });
+
+    it('shows Home and Archive navigation links in the sidenav', () => {
+      cy.get('mat-nav-list a').contains('Home').should('be.visible');
+      cy.get('mat-nav-list a').contains('Archive').should('be.visible');
+    });
+
+    it('navigates to /archive when the Archive link is clicked', () => {
+      interceptArchiveInit();
+      cy.get('mat-nav-list a').contains('Archive').click();
+      cy.wait('@getArchivedItems');
+      cy.url().should('include', '/archive');
+    });
+
+    it('navigates back to /todo when the Home link is clicked from /archive', () => {
+      interceptArchiveInit();
+      cy.get('mat-nav-list a').contains('Archive').click();
+      cy.wait('@getArchivedItems');
+
+      interceptTodoInit();
+      cy.get('mat-nav-list a').contains('Home').click();
+      cy.wait('@getTodoItems');
+      cy.url().should('include', '/todo');
+    });
   });
 });
