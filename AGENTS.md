@@ -2,18 +2,27 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Overview
 
-Single-page Angular v22 demo app. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). Two lazy-loaded routes defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component `src/app/app.ts` renders `<router-outlet />`.
+Single-page Angular v22 todo app. Angular Material + CDK v22, TypeScript 6 (strict), npm (Node version pinned in `.nvmrc`). Three lazy-loaded routes defined in `src/app/app.routes.ts`; providers in `src/app/app.config.ts`; root component `src/app/app.ts` renders the `Navigation` component (which hosts `<router-outlet />`).
 
-- `''` → `MatTabs` (`pages/mat-tabs`): tabs hosting `MatTable` (periodic-elements Material table: sort, filter, paginate, expandable rows, column picker) and `ExampleIframe` (`iframe-resizer` demo).
-- `'toolbar'` → `MatToolbar` (`pages/mat-toolbar`): toolbar with a `mat-drawer` sidenav.
+- `''` → redirects to `/todo`
+- `'todo'` → `TodoItemsPage` (`pages/todo-items`): active (non-archived) todo items grouped by PI and sprint, with hide-completed toggle.
+- `'archive'` → `ArchivedItemsPage` (`pages/archived-items`): archived todo items grouped by PI and sprint.
+- `'**'` → `PageNotFoundPage` (`pages/page-not-found`): 404 fallback.
+
+The backend API runs at `http://localhost:6958` and is consumed via `Api` and `MetadataApi` services using Angular's `HttpClient`.
 
 ## Repository Map
 
 - `src/app/pages/<name>/` — route-level ("page") components loaded lazily from `app.routes.ts`.
-- `src/app/components/<name>/` — reusable components used across pages. Components are standalone, laid out as `<name>.{ts,html,scss,spec.ts}`.
-- `src/app/services/` — signal-based singletons (`selected-page`, `url-cache`), `providedIn: 'root'`.
-- `src/app/directives/` — `iframe-resizer` attribute directive (`[appIframeResizer]`).
-- `src/app/interfaces/` — types and periodic-element data (`data.ts`).
+- `src/app/components/<name>/` — reusable components used across pages. Components are standalone, laid out as `<name>.{ts,html,scss,spec.ts}`. Key components:
+  - `navigation` — top-level nav shell with `<router-outlet />`.
+  - `base-todo-items` — shared base component for `TodoItemsPage` and `ArchivedItemsPage`.
+  - `todo-item` — renders a single todo item card.
+  - `create-item-dialog` — dialog for creating a new todo item.
+  - `add-new-pi-dialog` — dialog for adding a new PI value.
+  - `add-new-sprint-dialog` — dialog for adding a new sprint value.
+- `src/app/services/` — HTTP services (`api.ts`, `metadata-api.ts`), `providedIn: 'root'`.
+- `src/app/interfaces/` — types: `TodoItem` interface and `TodoItemType` union (`todo-item.ts`).
 - `cypress/e2e/` — end-to-end specs; `cypress/cypress.config.ts` — Cypress config.
 - `agent-instructions/source.md` — edit this, then sync (see below). Do not edit generated files directly.
 - `scripts/sync-agent-instructions.mjs` — generator for the AI instruction files.
