@@ -47,3 +47,10 @@ Thumbs.db
 
 # Codex
 .codex
+
+# Cypress
+cypress/downloads
+cypress/screenshots
+
+# Codacy
+.codacy/
