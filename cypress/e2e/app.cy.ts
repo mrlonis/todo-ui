@@ -36,6 +36,8 @@ describe('Application', () => {
       interceptTodoInit();
       cy.visit('/todo');
       cy.wait('@getTodoItems');
+      // The sidenav starts closed — open it via the toolbar menu button
+      cy.get('mat-toolbar button').first().click();
     });
 
     it('shows the app title in the toolbar', () => {

@@ -2,8 +2,8 @@ const API = 'http://localhost:6958/api';
 
 describe('Todo Items Page', () => {
   beforeEach(() => {
-    cy.intercept('GET', `${API}/metadata/pis`, { fixture: 'pis' });
-    cy.intercept('GET', `${API}/metadata/sprints`, { fixture: 'sprints' });
+    cy.intercept('GET', `${API}/metadata/pis`, { fixture: 'pis' }).as('getPis');
+    cy.intercept('GET', `${API}/metadata/sprints`, { fixture: 'sprints' }).as('getSprints');
   });
 
   describe('with items', () => {
@@ -12,7 +12,7 @@ describe('Todo Items Page', () => {
         fixture: 'todo-items-active',
       }).as('getTodoItems');
       cy.visit('/todo');
-      cy.wait('@getTodoItems');
+      cy.wait(['@getTodoItems', '@getPis', '@getSprints']);
     });
 
     it('shows the "TODO Items" heading', () => {
@@ -33,7 +33,11 @@ describe('Todo Items Page', () => {
 
     it('shows the "Hide completed tasks" toggle checked by default', () => {
       cy.get('#hideCompletedTasks').should('exist');
-      cy.get('#hideCompletedTasks input[type="checkbox"]').should('be.checked');
+      cy.get('#hideCompletedTasks button[role="switch"]').should(
+        'have.attr',
+        'aria-checked',
+        'true',
+      );
     });
 
     it('shows the correct table column headers', () => {
@@ -144,7 +148,7 @@ describe('Todo Items Page', () => {
         body: {},
       }).as('getTodoItems');
       cy.visit('/todo');
-      cy.wait('@getTodoItems');
+      cy.wait(['@getTodoItems', '@getPis', '@getSprints']);
     });
 
     it('shows "No items found"', () => {
