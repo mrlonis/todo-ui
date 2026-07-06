@@ -1,11 +1,19 @@
 import { Routes } from '@angular/router';
-import { ArchivedItemsComponent } from './pages/archived-items/archived-items';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found';
-import { TodoItemsComponent } from './pages/todo-items/todo-items';
 
 export const routes: Routes = [
-  { path: 'archive', component: ArchivedItemsComponent },
-  { path: 'todo', component: TodoItemsComponent },
+  {
+    path: 'archive',
+    loadComponent: () =>
+      import('./pages/archived-items/archived-items').then((m) => m.ArchivedItemsComponent),
+  },
+  {
+    path: 'todo',
+    loadComponent: () => import('./pages/todo-items/todo-items').then((m) => m.TodoItemsComponent),
+  },
   { path: '', redirectTo: '/todo', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/page-not-found/page-not-found').then((m) => m.PageNotFoundComponent),
+  },
 ];
