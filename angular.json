@@ -2,8 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "analytics": "ae57be6a-9427-4794-9590-32acd573b84d",
-    "schematicCollections": ["angular-eslint", "@schematics/angular"]
+    "packageManager": "npm",
+    "analytics": false,
+    "schematicCollections": ["angular-eslint"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -30,8 +31,12 @@
                 "input": "public"
               }
             ],
-            "styles": ["@angular/material/prebuilt-themes/cyan-orange.css", "src/styles.scss"],
-            "scripts": []
+            "styles": ["src/styles.scss"],
+            "scripts": [
+              "node_modules/iframe-resizer/js/iframeResizer.min.js",
+              "node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js"
+            ],
+            "allowedCommonJsDependencies": ["iframe-resizer"]
           },
           "configurations": {
             "production": {
@@ -70,12 +75,16 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "coverage": true,
+            "coverageReporters": ["html", "lcov", "text", "text-summary"]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html", "cypress"]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
