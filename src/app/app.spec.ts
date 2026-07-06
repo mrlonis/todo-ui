@@ -33,4 +33,11 @@ describe('AppComponent', () => {
 
     expect(app.title).toEqual('todo-ui');
   });
+
+  it('should render the navigation component', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('app-navigation')).toBeTruthy();
+  });
 });
