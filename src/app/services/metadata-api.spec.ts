@@ -1,16 +1,16 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MetadataApiService } from './metadata-api';
+import { MetadataApi } from './metadata-api';
 
-describe('MetadataApiService', () => {
-  let service: MetadataApiService;
+describe('MetadataApi', () => {
+  let service: MetadataApi;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    service = TestBed.inject(MetadataApiService);
+    service = TestBed.inject(MetadataApi);
   });
 
   it('should be created', () => {

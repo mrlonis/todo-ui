@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class MetadataApiService {
+export class MetadataApi {
   private readonly httpClient = inject(HttpClient);
 
   private readonly baseUrl = 'http://localhost:6958';

@@ -16,8 +16,8 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatTableModule } from '@angular/material/table';
 import { Observable, Subscription } from 'rxjs';
 import { TodoItem } from '../../interfaces/todo-item';
-import { ApiService } from '../../services/api';
-import { MetadataApiService } from '../../services/metadata-api';
+import { Api } from '../../services/api';
+import { MetadataApi } from '../../services/metadata-api';
 import { TodoItemComponent } from '../todo-item/todo-item';
 
 @Component({
@@ -36,9 +36,9 @@ import { TodoItemComponent } from '../todo-item/todo-item';
   templateUrl: './base-todo-items.html',
   styleUrl: './base-todo-items.scss',
 })
-export class BaseTodoItemsComponent implements OnInit, OnDestroy {
-  private readonly apiService = inject(ApiService);
-  private readonly metadataApiService = inject(MetadataApiService);
+export class BaseTodoItems implements OnInit, OnDestroy {
+  private readonly apiService = inject(Api);
+  private readonly metadataApiService = inject(MetadataApi);
   private readonly cdr = inject(ChangeDetectorRef);
 
   private eventsSubscription?: Subscription;

@@ -6,7 +6,7 @@ import { TodoItem } from '../interfaces/todo-item';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class Api {
   private readonly httpClient = inject(HttpClient);
 
   private readonly baseUrl = 'http://localhost:6958';

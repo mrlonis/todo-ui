@@ -18,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { TODO_ITEM_TYPES, TodoItem, TodoItemType } from '../../interfaces/todo-item';
-import { ApiService } from '../../services/api';
+import { Api } from '../../services/api';
 
 export interface CreateItemDialogData {
   pis: string[];
@@ -53,10 +53,10 @@ export interface TestingUrlFormGroupArray {
   templateUrl: './create-item-dialog.html',
   styleUrl: './create-item-dialog.scss',
 })
-export class CreateItemDialogComponent {
+export class CreateItemDialog {
   dialogRef = inject<DialogRef<TodoItem>>(DialogRef);
   data = inject<CreateItemDialogData>(DIALOG_DATA);
-  private apiService = inject(ApiService);
+  private apiService = inject(Api);
 
   pis: string[];
   sprints: number[];

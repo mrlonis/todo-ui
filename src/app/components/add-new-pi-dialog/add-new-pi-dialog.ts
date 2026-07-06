@@ -43,7 +43,7 @@ export function duplicatePiValidator(pis: string[]): ValidatorFn {
   templateUrl: './add-new-pi-dialog.html',
   styleUrl: './add-new-pi-dialog.scss',
 })
-export class AddNewPiDialogComponent {
+export class AddNewPiDialog {
   data = inject<AddNewPiDialogData>(DIALOG_DATA);
 
   readonly pis = input<string[]>([]);

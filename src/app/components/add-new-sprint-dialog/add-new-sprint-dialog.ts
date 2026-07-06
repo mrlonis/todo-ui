@@ -43,7 +43,7 @@ export function duplicateSprintValidator(sprints: number[]): ValidatorFn {
   templateUrl: './add-new-sprint-dialog.html',
   styleUrl: './add-new-sprint-dialog.scss',
 })
-export class AddNewSprintDialogComponent {
+export class AddNewSprintDialog {
   data = inject<AddNewSprintDialogData>(DIALOG_DATA);
 
   readonly sprints = input<number[]>([]);

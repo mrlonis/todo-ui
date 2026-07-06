@@ -28,7 +28,7 @@ export interface NavItem {
   templateUrl: './navigation.html',
   styleUrl: './navigation.scss',
 })
-export class NavigationComponent implements OnDestroy {
+export class Navigation implements OnDestroy {
   mobileQuery: MediaQueryList;
 
   navLinks: NavItem[] = [

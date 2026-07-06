@@ -1,18 +1,18 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddNewSprintDialogComponent } from './add-new-sprint-dialog';
+import { AddNewSprintDialog } from './add-new-sprint-dialog';
 
-describe('AddNewSprintDialogComponent', () => {
-  let component: AddNewSprintDialogComponent;
-  let fixture: ComponentFixture<AddNewSprintDialogComponent>;
+describe('AddNewSprintDialog', () => {
+  let component: AddNewSprintDialog;
+  let fixture: ComponentFixture<AddNewSprintDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddNewSprintDialogComponent],
+      imports: [AddNewSprintDialog],
       providers: [{ provide: DIALOG_DATA, useValue: { sprints: [0] } }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddNewSprintDialogComponent);
+    fixture = TestBed.createComponent(AddNewSprintDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

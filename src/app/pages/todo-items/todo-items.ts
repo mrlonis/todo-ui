@@ -4,29 +4,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import {
-  AddNewPiDialogComponent,
+  AddNewPiDialog,
   AddNewPiDialogData,
 } from '../../components/add-new-pi-dialog/add-new-pi-dialog';
 import {
-  AddNewSprintDialogComponent,
+  AddNewSprintDialog,
   AddNewSprintDialogData,
 } from '../../components/add-new-sprint-dialog/add-new-sprint-dialog';
-import { BaseTodoItemsComponent } from '../../components/base-todo-items/base-todo-items';
+import { BaseTodoItems } from '../../components/base-todo-items/base-todo-items';
 import {
-  CreateItemDialogComponent,
+  CreateItemDialog,
   CreateItemDialogData,
 } from '../../components/create-item-dialog/create-item-dialog';
 import { TodoItem } from '../../interfaces/todo-item';
-import { ApiService } from '../../services/api';
+import { Api } from '../../services/api';
 
 @Component({
   selector: 'app-todo-items',
-  imports: [BaseTodoItemsComponent, DialogModule, MatButtonModule, MatDialogModule],
+  imports: [BaseTodoItems, DialogModule, MatButtonModule, MatDialogModule],
   templateUrl: './todo-items.html',
   styleUrl: './todo-items.scss',
 })
-export class TodoItemsComponent {
-  private readonly apiService = inject(ApiService);
+export class TodoItemsPage {
+  private readonly apiService = inject(Api);
 
   readonly dialog = inject(MatDialog);
 
@@ -35,8 +35,8 @@ export class TodoItemsComponent {
   sprints: number[] = [];
 
   openDialog(): void {
-    const dialogRef = this.dialog.open<CreateItemDialogComponent, CreateItemDialogData, TodoItem>(
-      CreateItemDialogComponent,
+    const dialogRef = this.dialog.open<CreateItemDialog, CreateItemDialogData, TodoItem>(
+      CreateItemDialog,
       {
         width: '500px',
         data: { pis: this.pis, sprints: this.sprints },
@@ -57,13 +57,10 @@ export class TodoItemsComponent {
   }
 
   openNewPiDialog(): void {
-    const dialogRef = this.dialog.open<AddNewPiDialogComponent, AddNewPiDialogData, string>(
-      AddNewPiDialogComponent,
-      {
-        width: '500px',
-        data: { pis: this.pis },
-      },
-    );
+    const dialogRef = this.dialog.open<AddNewPiDialog, AddNewPiDialogData, string>(AddNewPiDialog, {
+      width: '500px',
+      data: { pis: this.pis },
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new PI dialog was closed', result);
@@ -76,14 +73,13 @@ export class TodoItemsComponent {
   }
 
   openNewSprintDialog(): void {
-    const dialogRef = this.dialog.open<
-      AddNewSprintDialogComponent,
-      AddNewSprintDialogData,
-      number | string
-    >(AddNewSprintDialogComponent, {
-      width: '500px',
-      data: { sprints: this.sprints },
-    });
+    const dialogRef = this.dialog.open<AddNewSprintDialog, AddNewSprintDialogData, number | string>(
+      AddNewSprintDialog,
+      {
+        width: '500px',
+        data: { sprints: this.sprints },
+      },
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new sprint dialog was closed', result);

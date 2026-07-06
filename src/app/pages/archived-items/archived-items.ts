@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { BaseTodoItemsComponent } from '../../components/base-todo-items/base-todo-items';
+import { BaseTodoItems } from '../../components/base-todo-items/base-todo-items';
 
 @Component({
   selector: 'app-archived-items',
-  imports: [BaseTodoItemsComponent],
+  imports: [BaseTodoItems],
   templateUrl: './archived-items.html',
   styleUrl: './archived-items.scss',
 })
-export class ArchivedItemsComponent {}
+export class ArchivedItemsPage {}

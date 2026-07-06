@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { AppComponent } from './app';
 import { routes } from './app.routes';
-import { TodoItemsComponent } from './pages/todo-items/todo-items';
+import { TodoItemsPage } from './pages/todo-items/todo-items';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -16,7 +16,7 @@ describe('AppComponent', () => {
       .compileComponents()
       .then(async () => {
         const harness = await RouterTestingHarness.create();
-        await harness.navigateByUrl('/', TodoItemsComponent);
+        await harness.navigateByUrl('/', TodoItemsPage);
       });
   });
 

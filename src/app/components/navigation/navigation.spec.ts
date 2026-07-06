@@ -3,19 +3,19 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { routes } from '../../app.routes';
-import { NavigationComponent } from './navigation';
+import { Navigation } from './navigation';
 
-describe('NavigationComponent', () => {
-  let component: NavigationComponent;
-  let fixture: ComponentFixture<NavigationComponent>;
+describe('Navigation', () => {
+  let component: Navigation;
+  let fixture: ComponentFixture<Navigation>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavigationComponent],
+      imports: [Navigation],
       providers: [provideRouter(routes), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NavigationComponent);
+    fixture = TestBed.createComponent(Navigation);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

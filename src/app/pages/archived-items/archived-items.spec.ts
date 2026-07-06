@@ -1,19 +1,19 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ArchivedItemsComponent } from './archived-items';
+import { ArchivedItemsPage } from './archived-items';
 
-describe('ArchivedItemsComponent', () => {
-  let component: ArchivedItemsComponent;
-  let fixture: ComponentFixture<ArchivedItemsComponent>;
+describe('ArchivedItemsPage', () => {
+  let component: ArchivedItemsPage;
+  let fixture: ComponentFixture<ArchivedItemsPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ArchivedItemsComponent],
+      imports: [ArchivedItemsPage],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ArchivedItemsComponent);
+    fixture = TestBed.createComponent(ArchivedItemsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

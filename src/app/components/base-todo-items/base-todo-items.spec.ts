@@ -1,20 +1,20 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseTodoItemsComponent } from './base-todo-items';
+import { BaseTodoItems } from './base-todo-items';
 
-describe('BaseTodoItemsComponent', () => {
-  let component: BaseTodoItemsComponent;
-  let fixture: ComponentFixture<BaseTodoItemsComponent>;
+describe('BaseTodoItems', () => {
+  let component: BaseTodoItems;
+  let fixture: ComponentFixture<BaseTodoItems>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BaseTodoItemsComponent],
+      imports: [BaseTodoItems],
       providers: [provideHttpClient(), provideHttpClientTesting()],
       animationsEnabled: true,
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BaseTodoItemsComponent);
+    fixture = TestBed.createComponent(BaseTodoItems);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
