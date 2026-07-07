@@ -34,7 +34,7 @@ Run `npm run test:ci` to execute the unit tests via [Karma](https://karma-runner
 
 ## Running end-to-end tests
 
-Run `npm run test:cypress` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run `npm run test:e2e` to execute the end-to-end tests via [Playwright](https://playwright.dev).
 
 ## Further help
 

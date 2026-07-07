@@ -23,7 +23,7 @@ The backend API runs at `http://localhost:6958` and is consumed via `Api` and `M
   - `add-new-sprint-dialog` — dialog for adding a new sprint value.
 - `src/app/services/` — HTTP services (`api.ts`, `metadata-api.ts`), `providedIn: 'root'`.
 - `src/app/interfaces/` — types: `TodoItem` interface and `TodoItemType` union (`todo-item.ts`).
-- `cypress/e2e/` — end-to-end specs; `cypress/cypress.config.ts` — Cypress config.
+- `tests/` — Playwright end-to-end specs (`*.spec.ts`); `tests/playwright.config.ts` — Playwright config; `tests/fixtures.ts` — shared fixture data.
 - `agent-instructions/source.md` — edit this, then sync (see below). Do not edit generated files directly.
 - `scripts/sync-agent-instructions.mjs` — generator for the AI instruction files.
 
@@ -38,7 +38,7 @@ The backend API runs at `http://localhost:6958` and is consumed via `Api` and `M
 
 - Dev server: `npm run start` (http://localhost:4200/). Build: `npm run build` (prod) / `npm run build:dev`.
 - Scoped unit test: `npm run test:unit -- --include src/app/app.spec.ts`. Full unit run: `npm run test:unit`.
-- E2E: `npm run test:cypress` (headless; `start-server-and-test` boots the app automatically). Interactive: `npm run test:cypress:open`.
+- E2E: `npm run test:e2e` (installs browsers then runs Playwright headlessly). Interactive/debug: `npx playwright test --ui`.
 - Lint: `npm run lint` (auto-fix: `npm run lint:fix`). Format: `npm run prettier` (check: `npm run prettier:test`).
 - CI (`.github/workflows/actions.yml`) runs, in order: sync check, lint, `npm run test`, Codacy coverage upload, build. Match this locally before pushing.
 
@@ -110,9 +110,9 @@ The backend API runs at `http://localhost:6958` and is consumed via `Api` and `M
 - Run linting for every change set; linting is required for all changes, not optional.
 - Use the lint command that matches the files you changed:
   - Angular app files: `npm run lint:angular`
-  - Cypress files: `npm run lint:cypress`
-  - Mixed changes (Angular + Cypress) or full-repo linting: `npm run lint`
-- For scoped linting, pass extra arguments through the matching script (for example: `npm run lint:angular -- <args>` or `npm run lint:cypress -- <args>`).
+  - Playwright test files: `npm run lint:playwright`
+  - Mixed changes (Angular + Playwright) or full-repo linting: `npm run lint`
+- For scoped linting, pass extra arguments through the matching script (for example: `npm run lint:angular -- <args>` or `npm run lint:playwright -- <args>`).
 - Treat lint failures as real issues to fix in code rather than bypass.
 - Never disable ESLint rules to make code pass linting.
   - Do not disable rules in root/shared ESLint config files.
@@ -134,8 +134,10 @@ The backend API runs at `http://localhost:6958` and is consumed via `Api` and `M
 - For async timing in unit tests, use Vitest timers (`vi.useFakeTimers`, `vi.runAllTimers`) instead of Jasmine/Zone helpers like `fakeAsync` and `tick`.
 - For component-injected services (for example `MatDialog`), create spies after `TestBed.createComponent(...)` so the child environment injector is initialized.
 - In tests for `BaseTodoItems`, account for all three startup requests from `ngOnInit`: todo items, PIs metadata, and sprints metadata.
-- For Cypress against Angular Material v22:
+- For Playwright against Angular Material v22:
   - `mat-slide-toggle` uses an internal `button[role="switch"]` with `aria-checked`, not a checkbox input.
-  - Avoid `cy.clear()` on `matInput` fields when flaky; prefer keystrokes like `{backspace}` or set value + trigger `input`.
-  - Avoid broad `cy.wait([...aliases])` patterns that can leave unconsumed aliases and cause cross-test interference; use targeted waits.
+  - Use URL predicate functions (e.g. `url => url.href === '...'`) for `page.route()` calls with query strings — the `?` character is treated as a glob wildcard when passing a plain string.
+  - Use `page.waitForResponse()` with a predicate and set it up **before** the action that triggers the request (ideally in `Promise.all` alongside `page.goto()`).
+  - Use `locator.filter({ hasText: /^exact$/ })` or `getByText(text, { exact: true })` instead of `toContainText` on locators that may match multiple elements.
+  - To update Angular reactive form inputs cross-browser (including webkit), use `locator.evaluate` to set the native value and dispatch `input`/`blur` events rather than `fill()` or `pressSequentially()` alone.
   - Prefer waiting on stable UI signals (for example rendered metadata text) before opening dialogs or asserting validation state.

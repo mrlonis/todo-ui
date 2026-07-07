@@ -32,25 +32,26 @@ yarn-error.log
 /.angular/cache
 .sass-cache/
 /connect.lock
-
+/coverage
 /libpeerconnection.log
 testem.log
 /typings
+__screenshots__/
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Test Reports
-/coverage
-/test-reports
-
-# Codex
-.codex
-
-# Cypress
-cypress/downloads
-cypress/screenshots
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
 
 # Codacy
 .codacy/
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
