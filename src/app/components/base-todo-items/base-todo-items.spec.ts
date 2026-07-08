@@ -61,20 +61,20 @@ describe('BaseTodoItems', () => {
   it('should add archive column when not in archive mode', () => {
     fixture.detectChanges();
     flushInit();
-    expect(component.columnsToDisplayWithExpand).toContain('archive');
+    expect(component.columnsToDisplayWithExpand()).toContain('archive');
   });
 
   it('should NOT add archive column when in archive mode', () => {
     fixture.componentRef.setInput('archive', true);
     fixture.detectChanges();
     flushInit(true);
-    expect(component.columnsToDisplayWithExpand).not.toContain('archive');
+    expect(component.columnsToDisplayWithExpand()).not.toContain('archive');
   });
 
   it('should start with hideCompletedTasks=true', () => {
     fixture.detectChanges();
     flushInit();
-    expect(component.hideCompletedTasks).toBe(true);
+    expect(component.hideCompletedTasks()).toBe(true);
   });
 
   it('should emit pis output with data from metadataApiService', () => {
@@ -110,11 +110,11 @@ describe('BaseTodoItems', () => {
     httpMock.expectOne(`${metaBase}/pis`).flush([]);
     httpMock.expectOne(`${metaBase}/sprints`).flush([]);
 
-    expect(component.items).toBeDefined();
-    expect(component.items?.has('PI1')).toBe(true);
-    expect(component.items?.get('PI1')?.has(1)).toBe(true);
-    expect(component.items?.get('PI1')?.get(1)).toHaveLength(1);
-    expect(component.items?.get('PI2')?.get(3)).toHaveLength(1);
+    expect(component.items()).toBeDefined();
+    expect(component.items()?.has('PI1')).toBe(true);
+    expect(component.items()?.get('PI1')?.has(1)).toBe(true);
+    expect(component.items()?.get('PI1')?.get(1)).toHaveLength(1);
+    expect(component.items()?.get('PI2')?.get(3)).toHaveLength(1);
   });
 
   it('should subscribe to refreshTodoItems and re-fetch when emitted', () => {
@@ -155,14 +155,14 @@ describe('BaseTodoItems', () => {
 
     it('should update hideCompletedTasks and re-fetch items', () => {
       component.handleHideTasks({ checked: false } as MatSlideToggleChange);
-      expect(component.hideCompletedTasks).toBe(false);
+      expect(component.hideCompletedTasks()).toBe(false);
       httpMock.expectOne(`${apiBase}/itemsByPiAndBySprint?hideCompleted=false`).flush({});
     });
 
     it('should re-fetch with hideCompleted=true when toggled back on', () => {
-      component.hideCompletedTasks = false;
+      component.hideCompletedTasks.set(false);
       component.handleHideTasks({ checked: true } as MatSlideToggleChange);
-      expect(component.hideCompletedTasks).toBe(true);
+      expect(component.hideCompletedTasks()).toBe(true);
       httpMock.expectOne(`${apiBase}/itemsByPiAndBySprint?hideCompleted=true`).flush({});
     });
   });
@@ -182,20 +182,20 @@ describe('BaseTodoItems', () => {
     it('should set expandedElementId to the element id on first click', () => {
       const item = makeTodoItem({ id: 42 });
       component.handleRowExpansion(makeEvent('row-button'), item);
-      expect(component.expandedElementId).toBe(42);
+      expect(component.expandedElementId()).toBe(42);
     });
 
     it('should collapse (set to undefined) when clicking the same element again', () => {
       const item = makeTodoItem({ id: 42 });
       component.handleRowExpansion(makeEvent('row-button'), item);
       component.handleRowExpansion(makeEvent('row-button'), item);
-      expect(component.expandedElementId).toBeUndefined();
+      expect(component.expandedElementId()).toBeUndefined();
     });
 
     it('should ignore events triggered by the completed-checkbox', () => {
       const item = makeTodoItem({ id: 42 });
       component.handleRowExpansion(makeEvent('completed-checkbox-1'), item);
-      expect(component.expandedElementId).toBeUndefined();
+      expect(component.expandedElementId()).toBeUndefined();
     });
 
     it('should call stopPropagation when stopPropagation is true', () => {

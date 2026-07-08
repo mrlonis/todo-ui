@@ -5,8 +5,8 @@
     <button mat-flat-button (click)="openDialog()">Create New Task</button>
   </div>
   <div>
-    <p>PIs: {{ pis }}</p>
-    <p>Sprints: {{ sprints }}</p>
+    <p>PIs: {{ pis() }}</p>
+    <p>Sprints: {{ sprints() }}</p>
   </div>
   <app-base-todo-items
     title="TODO Items"

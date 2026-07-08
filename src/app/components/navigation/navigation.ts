@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,8 +30,9 @@ export interface NavItem {
 })
 export class Navigation implements OnDestroy {
   mobileQuery: MediaQueryList;
+  readonly mobileMatches = signal(false);
 
-  navLinks: NavItem[] = [
+  readonly navLinks: NavItem[] = [
     { link: '/', display: 'Home' },
     { link: '/archive', display: 'Archive' },
   ];
@@ -39,11 +40,11 @@ export class Navigation implements OnDestroy {
   private _mobileQueryListener: (event: MediaQueryListEvent) => void;
 
   constructor() {
-    const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileMatches.set(this.mobileQuery.matches);
+    this._mobileQueryListener = () => this.mobileMatches.set(this.mobileQuery.matches);
     try {
       this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     } catch (e) {

@@ -1,12 +1,14 @@
 import {
-  ChangeDetectorRef,
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
+  computed,
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -14,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TodoItem } from '../../interfaces/todo-item';
 import { Api } from '../../services/api';
 import { MetadataApi } from '../../services/metadata-api';
@@ -36,50 +38,43 @@ import { TodoItemComponent } from '../todo-item/todo-item';
   templateUrl: './base-todo-items.html',
   styleUrl: './base-todo-items.scss',
 })
-export class BaseTodoItems implements OnInit, OnDestroy {
+export class BaseTodoItems implements OnInit {
   private readonly apiService = inject(Api);
   private readonly metadataApiService = inject(MetadataApi);
-  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
-  private eventsSubscription?: Subscription;
   readonly title = input<string>('');
   readonly archive = input<boolean>(false);
   readonly refreshTodoItems = input<Observable<void> | undefined>();
   readonly pis = output<string[]>();
   readonly sprints = output<number[]>();
 
-  columnsToDisplay = ['title', 'jiraUrl'];
-  columnsToDisplayWithExpand = ['completed', ...this.columnsToDisplay, 'expand'];
-  expandedElementId?: number;
+  readonly columnsToDisplay = ['title', 'jiraUrl'];
+  readonly columnsToDisplayWithExpand = computed(() => {
+    const cols = ['completed', ...this.columnsToDisplay, 'expand'];
+    return this.archive() ? cols : [...cols, 'archive'];
+  });
 
-  items?: Map<string, Map<number, TodoItem[]>>;
-  expandedIndex = 0;
-  hideCompletedTasks = true;
+  readonly items = signal<Map<string, Map<number, TodoItem[]>> | undefined>(undefined);
+  readonly expandedElementId = signal<number | undefined>(undefined);
+  readonly hideCompletedTasks = signal(true);
 
   ngOnInit() {
     this.getTodoItems();
     const refreshTodoItemsObservable = this.refreshTodoItems();
     if (refreshTodoItemsObservable !== undefined) {
-      this.eventsSubscription = refreshTodoItemsObservable.subscribe(() => this.getTodoItems());
-    }
-
-    if (!this.archive()) {
-      this.columnsToDisplayWithExpand = [...this.columnsToDisplayWithExpand, 'archive'];
+      refreshTodoItemsObservable
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.getTodoItems());
     }
 
     this.metadataApiService.getAllPis().subscribe((pis) => this.pis.emit(pis));
     this.metadataApiService.getAllSprints().subscribe((sprints) => this.sprints.emit(sprints));
   }
 
-  ngOnDestroy() {
-    if (this.eventsSubscription !== undefined) {
-      this.eventsSubscription.unsubscribe();
-    }
-  }
-
   getTodoItems() {
     this.apiService
-      .getTodoItemsByPiAndBySprint(this.hideCompletedTasks, this.archive())
+      .getTodoItemsByPiAndBySprint(this.hideCompletedTasks(), this.archive())
       .subscribe((response) => {
         const newItemsMap = new Map<string, Map<number, TodoItem[]>>();
 
@@ -91,8 +86,7 @@ export class BaseTodoItems implements OnInit, OnDestroy {
           }
           newItemsMap.set(pi, sprintMap);
         }
-        this.items = newItemsMap;
-        this.cdr.markForCheck();
+        this.items.set(newItemsMap);
       });
   }
 
@@ -108,7 +102,7 @@ export class BaseTodoItems implements OnInit, OnDestroy {
   handleRowExpansion(event: Event, element: TodoItem, stopPropagation = false) {
     console.log('Row expansion', event, element, stopPropagation);
 
-    // Check if event target id contains completed-checkbox, If it does, ignore the event (but still stop propagation if desired)
+    // Check if event target id contains completed-checkbox; if so, ignore (but still stop propagation if desired)
     if ((event.target as HTMLElement).id.includes('completed-checkbox')) {
       console.log('Ignoring row expansion event because it was triggered by the checkbox');
       if (stopPropagation) {
@@ -119,8 +113,8 @@ export class BaseTodoItems implements OnInit, OnDestroy {
     }
 
     console.log('Expanding element', element);
-    this.expandedElementId = this.expandedElementId === element.id ? undefined : element.id;
-    console.log('Expanded element', this.expandedElementId);
+    this.expandedElementId.set(this.expandedElementId() === element.id ? undefined : element.id);
+    console.log('Expanded element', this.expandedElementId());
     if (stopPropagation) {
       console.log('Stopping propagation');
       event.stopPropagation();
@@ -129,7 +123,7 @@ export class BaseTodoItems implements OnInit, OnDestroy {
 
   handleHideTasks(event: MatSlideToggleChange) {
     console.log('Hide completed tasks', event);
-    this.hideCompletedTasks = event.checked;
+    this.hideCompletedTasks.set(event.checked);
     this.getTodoItems();
   }
 
