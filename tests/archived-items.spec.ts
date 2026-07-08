@@ -45,7 +45,7 @@ test.describe('Archived Items Page', () => {
     });
 
     test('calls the ?archived=true endpoint (not hideCompleted)', () => {
-      expect(archivedItemsResponse).toBeTruthy();
+      expect(archivedItemsResponse.url()).toBe(URLS.archivedItems);
     });
   });
 

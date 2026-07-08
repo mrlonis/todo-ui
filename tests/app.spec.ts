@@ -3,6 +3,13 @@ import { URLS } from './fixtures';
 
 test.describe('App', () => {
   test('shows the application title in the document title', async ({ page }) => {
+    await page.route(
+      (url) => url.href === URLS.todoItemsActive,
+      (route) => route.fulfill({ json: {} }),
+    );
+    await page.route(URLS.pis, (route) => route.fulfill({ json: [] }));
+    await page.route(URLS.sprints, (route) => route.fulfill({ json: [] }));
+
     await page.goto('');
 
     await expect(page).toHaveTitle(/TodoUi/);
