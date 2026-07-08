@@ -128,13 +128,16 @@ test.describe('Dialogs', () => {
 
     test('closes dialog when a valid PI is submitted', async ({ page }) => {
       await page.getByRole('button', { name: 'Add New PI' }).click();
-      await page.locator('mat-dialog-container input').fill('PI3');
 
-      // Use force:true because OnPush re-render timing may keep [disabled] stale
-      await page
-        .locator('mat-dialog-container')
-        .getByRole('button', { name: 'Add' })
-        .click({ force: true });
+      await page.locator('mat-dialog-container input').evaluate((el: HTMLInputElement) => {
+        el.value = 'PI3';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('blur', { bubbles: true }));
+      });
+
+      const addButton = page.locator('mat-dialog-container').getByRole('button', { name: 'Add' });
+      await expect(addButton).not.toBeDisabled();
+      await addButton.click();
 
       await expect(page.locator('mat-dialog-container')).not.toBeAttached();
     });
@@ -166,7 +169,11 @@ test.describe('Dialogs', () => {
       await page.getByRole('button', { name: 'Add New Sprint' }).click();
 
       // Clear the default value — Validators.required then fails
-      await page.locator('mat-dialog-container input').fill('');
+      await page.locator('mat-dialog-container input').evaluate((el: HTMLInputElement) => {
+        el.value = '';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('blur', { bubbles: true }));
+      });
 
       await expect(
         page.locator('mat-dialog-container').getByRole('button', { name: 'Add' }),
@@ -176,8 +183,11 @@ test.describe('Dialogs', () => {
     test('closes dialog when a valid sprint is submitted', async ({ page }) => {
       await page.getByRole('button', { name: 'Add New Sprint' }).click();
 
-      // Replace the default value with a valid sprint number
-      await page.locator('mat-dialog-container input').fill('3');
+      await page.locator('mat-dialog-container input').evaluate((el: HTMLInputElement) => {
+        el.value = '3';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('blur', { bubbles: true }));
+      });
 
       const addButton = page.locator('mat-dialog-container').getByRole('button', { name: 'Add' });
       await expect(addButton).not.toBeDisabled();
