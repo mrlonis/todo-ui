@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -66,9 +66,9 @@ export class CreateItemDialog {
   todoItemTypes = TODO_ITEM_TYPES;
 
   prUrlsFormGroup = new FormGroup<Record<string, AbstractControl<string | null>>>({});
-  prUrlsFormGroupAsArray: PrUrlFormGroupArray[] = [];
+  readonly prUrlsFormGroupAsArray = signal<PrUrlFormGroupArray[]>([]);
   urlsUsedForTestingFormGroup = new FormGroup<Record<string, AbstractControl<string | null>>>({});
-  urlsUsedForTestingFormGroupAsArray: TestingUrlFormGroupArray[] = [];
+  readonly urlsUsedForTestingFormGroupAsArray = signal<TestingUrlFormGroupArray[]>([]);
   createItemDialogForm = new FormGroup({
     titleFormControl: new FormControl<string>('', {
       nonNullable: true,
@@ -126,13 +126,7 @@ export class CreateItemDialog {
   }
 
   getPrUrlFormControlsAsArray(): PrUrlFormGroupArray[] {
-    const keys = Object.keys(this.prUrlsFormGroup.controls);
-    const returnValue = [];
-    for (const key of keys) {
-      returnValue.push({ name: key, control: this.prUrlsFormGroup.controls[key] });
-    }
-    this.prUrlsFormGroupAsArray = returnValue;
-    return returnValue;
+    return this.prUrlsFormGroupAsArray();
   }
 
   addNewPrUrl() {
@@ -140,32 +134,22 @@ export class CreateItemDialog {
       const newFormControlName = 'prUrlFormControl' + this.nextPrUrlIdNum++;
       const newFormControl = new FormControl<string | null>(null);
       this.prUrlsFormGroup.addControl(newFormControlName, newFormControl);
-      this.prUrlsFormGroupAsArray.push({
-        name: newFormControlName,
-        control: newFormControl,
-      });
+      this.prUrlsFormGroupAsArray.update((arr) => [
+        ...arr,
+        { name: newFormControlName, control: newFormControl },
+      ]);
     }, 0);
   }
 
   removePrUrl(formControlName: string) {
     this.prUrlsFormGroup.removeControl(formControlName);
-    const index = this.prUrlsFormGroupAsArray.findIndex((prUrl) => prUrl.name === formControlName);
-    if (index !== -1) {
-      this.prUrlsFormGroupAsArray.splice(index, 1);
-    }
+    this.prUrlsFormGroupAsArray.update((arr) =>
+      arr.filter((item) => item.name !== formControlName),
+    );
   }
 
   getUrlsUsedForTestingFormControlsAsArray(): TestingUrlFormGroupArray[] {
-    const keys = Object.keys(this.urlsUsedForTestingFormGroup.controls);
-    const returnValue = [];
-    for (const key of keys) {
-      returnValue.push({
-        name: key,
-        control: this.urlsUsedForTestingFormGroup.controls[key],
-      });
-    }
-    this.urlsUsedForTestingFormGroupAsArray = returnValue;
-    return returnValue;
+    return this.urlsUsedForTestingFormGroupAsArray();
   }
 
   addNewTestingUrl() {
@@ -173,20 +157,17 @@ export class CreateItemDialog {
       const newFormControlName = 'testingUrlFormControl' + this.nextTestingUrlIdNum++;
       const newFormControl = new FormControl<string | null>(null);
       this.urlsUsedForTestingFormGroup.addControl(newFormControlName, newFormControl);
-      this.urlsUsedForTestingFormGroupAsArray.push({
-        name: newFormControlName,
-        control: newFormControl,
-      });
+      this.urlsUsedForTestingFormGroupAsArray.update((arr) => [
+        ...arr,
+        { name: newFormControlName, control: newFormControl },
+      ]);
     }, 0);
   }
 
   removeTestingUrl(formControlName: string) {
     this.urlsUsedForTestingFormGroup.removeControl(formControlName);
-    const index = this.urlsUsedForTestingFormGroupAsArray.findIndex(
-      (testingUrl) => testingUrl.name === formControlName,
+    this.urlsUsedForTestingFormGroupAsArray.update((arr) =>
+      arr.filter((item) => item.name !== formControlName),
     );
-    if (index !== -1) {
-      this.urlsUsedForTestingFormGroupAsArray.splice(index, 1);
-    }
   }
 }

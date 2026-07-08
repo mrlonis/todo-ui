@@ -49,12 +49,12 @@
         <mat-divider />
         <div formGroupName="prUrls">
           <button mat-flat-button type="button" (click)="addNewPrUrl()">Add New PR URL</button>
-          @if (this.prUrlsFormGroupAsArray.length === 0) {
+          @if (prUrlsFormGroupAsArray().length === 0) {
             <div>No PR URLs</div>
           }
-          @if (this.prUrlsFormGroupAsArray.length > 0) {
+          @if (prUrlsFormGroupAsArray().length > 0) {
             <mat-list role="list">
-              @for (item of getPrUrlFormControlsAsArray(); track item.name; let index = $index) {
+              @for (item of prUrlsFormGroupAsArray(); track item.name; let index = $index) {
                 <mat-list-item role="listitem"
                   ><mat-form-field>
                     <mat-label>PR Url</mat-label>
@@ -88,13 +88,13 @@
           <button mat-flat-button type="button" (click)="addNewTestingUrl()">
             Add New URL Used For Testing
           </button>
-          @if (this.urlsUsedForTestingFormGroupAsArray.length === 0) {
+          @if (urlsUsedForTestingFormGroupAsArray().length === 0) {
             <div>No URLs Used For Testing</div>
           }
-          @if (this.urlsUsedForTestingFormGroupAsArray.length > 0) {
+          @if (urlsUsedForTestingFormGroupAsArray().length > 0) {
             <mat-list role="list">
               @for (
-                item of urlsUsedForTestingFormGroupAsArray;
+                item of urlsUsedForTestingFormGroupAsArray();
                 track item.name;
                 let index = $index
               ) {

@@ -68,28 +68,28 @@ describe('TodoItemsPage', () => {
   });
 
   it('should initialize with empty pis and sprints', () => {
-    expect(component.pis).toEqual([]);
-    expect(component.sprints).toEqual([]);
+    expect(component.pis()).toEqual([]);
+    expect(component.sprints()).toEqual([]);
   });
 
   describe('setPis', () => {
     it('should update the pis array', () => {
       component.setPis(['PI1', 'PI2']);
-      expect(component.pis).toEqual(['PI1', 'PI2']);
+      expect(component.pis()).toEqual(['PI1', 'PI2']);
     });
   });
 
   describe('setSprints', () => {
     it('should update the sprints array', () => {
       component.setSprints([1, 2, 3]);
-      expect(component.sprints).toEqual([1, 2, 3]);
+      expect(component.sprints()).toEqual([1, 2, 3]);
     });
   });
 
   describe('openDialog', () => {
     it('should open CreateItemDialog with the current pis and sprints', () => {
-      component.pis = ['PI1'];
-      component.sprints = [1];
+      component.pis.set(['PI1']);
+      component.sprints.set([1]);
       mockDialog(undefined);
 
       component.openDialog();
@@ -132,21 +132,21 @@ describe('TodoItemsPage', () => {
     });
 
     it('should append the returned PI to the pis array', () => {
-      component.pis = ['PI1'];
+      component.pis.set(['PI1']);
       mockDialog('PI2');
 
       component.openNewPiDialog();
 
-      expect(component.pis).toEqual(['PI1', 'PI2']);
+      expect(component.pis()).toEqual(['PI1', 'PI2']);
     });
 
     it('should not modify pis when the dialog is cancelled', () => {
-      component.pis = ['PI1'];
+      component.pis.set(['PI1']);
       mockDialog(undefined);
 
       component.openNewPiDialog();
 
-      expect(component.pis).toEqual(['PI1']);
+      expect(component.pis()).toEqual(['PI1']);
     });
   });
 
@@ -160,39 +160,39 @@ describe('TodoItemsPage', () => {
     });
 
     it('should append a numeric result to the sprints array', () => {
-      component.sprints = [1];
+      component.sprints.set([1]);
       mockDialog(2);
 
       component.openNewSprintDialog();
 
-      expect(component.sprints).toEqual([1, 2]);
+      expect(component.sprints()).toEqual([1, 2]);
     });
 
     it('should parse a string result to a number before appending', () => {
-      component.sprints = [];
+      component.sprints.set([]);
       mockDialog('3');
 
       component.openNewSprintDialog();
 
-      expect(component.sprints).toEqual([3]);
+      expect(component.sprints()).toEqual([3]);
     });
 
     it('should not modify sprints when the dialog is cancelled (undefined result)', () => {
-      component.sprints = [1];
+      component.sprints.set([1]);
       mockDialog(undefined);
 
       component.openNewSprintDialog();
 
-      expect(component.sprints).toEqual([1]);
+      expect(component.sprints()).toEqual([1]);
     });
 
     it('should not modify sprints when result is NaN', () => {
-      component.sprints = [1];
+      component.sprints.set([1]);
       mockDialog('not-a-number');
 
       component.openNewSprintDialog();
 
-      expect(component.sprints).toEqual([1]);
+      expect(component.sprints()).toEqual([1]);
     });
   });
 });

@@ -1,24 +1,24 @@
 <div>
   <h2>{{ title() }}</h2>
   <div>
-    @if (items === undefined) {
+    @if (items() === undefined) {
       <mat-progress-bar mode="indeterminate" />
     }
-    @if (items !== undefined) {
+    @if (items() !== undefined) {
       <mat-accordion [multi]="true" displayMode="default">
-        @if (!this.archive()) {
+        @if (!archive()) {
           <mat-slide-toggle
             id="hideCompletedTasks"
-            [checked]="hideCompletedTasks"
+            [checked]="hideCompletedTasks()"
             (change)="handleHideTasks($event)"
             >Hide completed tasks</mat-slide-toggle
           >
         }
-        @if (items.size === 0) {
+        @if (items()!.size === 0) {
           <p>No items found</p>
         }
-        @if (items.size > 0) {
-          @for (item of items; track item[0]; let index = $index) {
+        @if (items()!.size > 0) {
+          @for (item of items()!; track item[0]; let index = $index) {
             <mat-expansion-panel [expanded]="true" class="white-border">
               <mat-expansion-panel-header>
                 <mat-panel-title>PI {{ item[0] }}</mat-panel-title>
@@ -68,7 +68,7 @@
                           aria-label="expand row"
                           (click)="handleRowExpansion($event, element, true)"
                         >
-                          @if (expandedElementId === element['id']) {
+                          @if (expandedElementId() === element['id']) {
                             <mat-icon>keyboard_arrow_up</mat-icon>
                           } @else {
                             <mat-icon>keyboard_arrow_down</mat-icon>
@@ -77,7 +77,7 @@
                       </td>
                     </ng-container>
 
-                    @if (!this.archive()) {
+                    @if (!archive()) {
                       <ng-container matColumnDef="archive">
                         <th mat-header-cell *matHeaderCellDef aria-label="row actions">Archive</th>
                         <td mat-cell *matCellDef="let element">
@@ -97,12 +97,12 @@
                       <td
                         mat-cell
                         *matCellDef="let element"
-                        [attr.colspan]="columnsToDisplayWithExpand.length"
+                        [attr.colspan]="columnsToDisplayWithExpand().length"
                       >
                         <div
                           class="example-element-detail"
                           [class.example-element-detail-expanded]="
-                            element['id'] === expandedElementId
+                            element['id'] === expandedElementId()
                           "
                         >
                           <div class="example-element-detail-content">
@@ -112,12 +112,12 @@
                       </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand()"></tr>
                     <tr
                       mat-row
-                      *matRowDef="let element; columns: columnsToDisplayWithExpand"
+                      *matRowDef="let element; columns: columnsToDisplayWithExpand()"
                       class="example-element-row"
-                      [class.example-expanded-row]="expandedElementId === element['id']"
+                      [class.example-expanded-row]="expandedElementId() === element['id']"
                       (click)="handleRowExpansion($event, element)"
                     ></tr>
                     <tr

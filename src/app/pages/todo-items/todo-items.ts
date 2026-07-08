@@ -1,5 +1,5 @@
 import { DialogModule } from '@angular/cdk/dialog';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -30,16 +30,16 @@ export class TodoItemsPage {
 
   readonly dialog = inject(MatDialog);
 
-  refreshTodoItems: Subject<void> = new Subject<void>();
-  pis: string[] = [];
-  sprints: number[] = [];
+  readonly refreshTodoItems: Subject<void> = new Subject<void>();
+  readonly pis = signal<string[]>([]);
+  readonly sprints = signal<number[]>([]);
 
   openDialog(): void {
     const dialogRef = this.dialog.open<CreateItemDialog, CreateItemDialogData, TodoItem>(
       CreateItemDialog,
       {
         width: '500px',
-        data: { pis: this.pis, sprints: this.sprints },
+        data: { pis: this.pis(), sprints: this.sprints() },
       },
     );
 
@@ -59,13 +59,13 @@ export class TodoItemsPage {
   openNewPiDialog(): void {
     const dialogRef = this.dialog.open<AddNewPiDialog, AddNewPiDialogData, string>(AddNewPiDialog, {
       width: '500px',
-      data: { pis: this.pis },
+      data: { pis: this.pis() },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The add new PI dialog was closed', result);
       if (result) {
-        this.pis = [...this.pis, result];
+        this.pis.update((pis) => [...pis, result]);
       } else {
         console.log('No add new PI result');
       }
@@ -77,7 +77,7 @@ export class TodoItemsPage {
       AddNewSprintDialog,
       {
         width: '500px',
-        data: { sprints: this.sprints },
+        data: { sprints: this.sprints() },
       },
     );
 
@@ -87,7 +87,7 @@ export class TodoItemsPage {
         result = parseInt(result, 10);
       }
       if (result !== undefined && !isNaN(result)) {
-        this.sprints = [...this.sprints, result];
+        this.sprints.update((sprints) => [...sprints, result]);
       } else {
         console.log('No add new sprint result');
       }
@@ -95,10 +95,10 @@ export class TodoItemsPage {
   }
 
   setPis(pis: string[]): void {
-    this.pis = pis;
+    this.pis.set(pis);
   }
 
   setSprints(sprints: number[]): void {
-    this.sprints = sprints;
+    this.sprints.set(sprints);
   }
 }
