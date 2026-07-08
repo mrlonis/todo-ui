@@ -9,6 +9,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 5
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -17,64 +18,22 @@ updates:
       - dependency-type: 'all'
     open-pull-requests-limit: 5
     groups:
-      angular-version-updates:
+      safe-version-updates:
         applies-to: version-updates
         patterns:
-          - '@angular*'
-          - 'ngx*'
+          - '*'
         update-types:
           - 'minor'
           - 'patch'
-      angular-security-updates:
+      safe-security-updates:
         applies-to: security-updates
         patterns:
-          - '@angular*'
-          - 'ngx*'
-        update-types:
-          - 'patch'
-          - 'minor'
-      production-version-updates:
-        applies-to: version-updates
-        dependency-type: production
-        update-types:
-          - 'patch'
-          - 'minor'
-      production-security-updates:
-        applies-to: security-updates
-        dependency-type: production
-        update-types:
-          - 'patch'
-          - 'minor'
-      development-version-updates:
-        applies-to: version-updates
-        dependency-type: development
-        update-types:
-          - 'patch'
-          - 'minor'
-      development-security-updates:
-        applies-to: security-updates
-        dependency-type: development
+          - '*'
         update-types:
           - 'patch'
           - 'minor'
     ignore:
-      - dependency-name: '@types/iframe-resizer'
-        update-types: ['version-update:semver-major']
-      - dependency-name: '@types/node'
-        update-types: ['version-update:semver-major']
-      - dependency-name: '*angular*'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'cypress'
-        update-types: ['version-update:semver-major']
-      - dependency-name: '*eslint*'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'iframe-resizer'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'jsdom'
-        update-types: ['version-update:semver-major']
-      - dependency-name: 'ngx*'
+      - dependency-name: '*'
         update-types: ['version-update:semver-major']
       - dependency-name: 'typescript'
         update-types: ['version-update:semver-major', 'version-update:semver-minor']
-      - dependency-name: '*vitest*'
-        update-types: ['version-update:semver-major']
