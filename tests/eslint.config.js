@@ -6,6 +6,8 @@ module.exports = defineConfig([
   ...rootConfig,
   {
     files: ['**/*.ts'],
-    rules: {},
+    rules: {
+      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    },
   },
 ]);
